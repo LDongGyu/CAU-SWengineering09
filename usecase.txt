@@ -1,0 +1,14 @@
+UC1: LOAD
+UC2: EDIT
+UC3: SAVE
+UC4: COMPARE
+UC5: MERGE 
+	5-1 copy to right
+	5-2 copy to left
+UC6: EXIT
+
+UC7: 색깔변경하기
+UC8: 글씨크기변경
+UC9: 글씨체변경
+UC10:인코딩형식 정하기
+ 
