@@ -1,0 +1,8 @@
+Ⅶ. Development and Target Platforms
+  1. Windows(7, 8, 8.1, 10) Operating System
+  2. Intel & AMD processors
+  3. JAVA Eclipse IDE
+  4. GitHub
+
+Ⅷ. Project Glossary
+  - 
