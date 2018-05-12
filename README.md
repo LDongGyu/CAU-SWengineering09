@@ -25,3 +25,10 @@
 
 ## 기타 강조사항
 * 문제점은 이슈 남기기
+
+
+## SRS 담당 파트
+* 백인혁 (20141266)  {UC(8,9) , Suportability , Constraints}
+* 백찬희 (20142503)  {UC1, Usability , Use case diagram}
+* 이동규 (20140490)  {UC(5,6,7) , introduction , 목차}
+* 함지훈 (20146512)  {UC(2,3,4) , Reliability , R.D.T Table}
