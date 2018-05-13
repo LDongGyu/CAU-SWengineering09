@@ -1,0 +1,13 @@
+Ⅶ. Development and Target Platforms
+  1. Windows(7, 8, 8.1, 10) Operating System
+  2. Intel & AMD processors
+  3. JAVA Eclipse IDE
+  4. GitHub
+
+Ⅷ. Project Glossary
+  1. view : 텍스트를 보여주는 패널/창을 의미한다.
+  2. Load : 텍스트 파일을 불러온다.
+  3. Compare : Load 된 2개의 텍스트 파일을 서로 비교한다.
+  3. Merge : Compare 결과를 가지고 서로 다른부분들을 어느 한쪽을 기준으로 서로 파일의 내용을 동일하게 만드는 작업을 의미한다.
+     * 결과적으로 Merge를 실행하면 왼쪽과 오른쪽 파일내용이 같아져야 한다.
+  4. Save : 작업한 파일의 내용을 저장한다.
