@@ -1,0 +1,64 @@
+Functional Requirement
+
+0. 텍스트 뷰 패널
+1. 파일 탐색하기
+2. 파일 불러오기
+3. 텍스트 수정하기
+4. 텍스트 비교하기
+5. 다른 텍스트 보여주기
+6. 파일 병합하기
+7. 프로그램 종료하기
+8. Save 안하고 종료시 저장 이슈 (다시 켰을 때 불러오기 or save 권고 문구 띄우기 등)
+
+---------------------------------------------------------
+
+Non-Functional Requirement
+
+Usability (사용자가 쓰기 편하게)
+1. 폰트 크기 변경
+2. 비교된 텍스트 배경색 설정
+3. 다른 텍스트를 병합할 때 모두 바꿀 것인지 하나씩 바꿀 것인지 선택
+
+Reliability
+1. 파일 로드가 실패했을 때 경고 문구를 띄어준다.
+
+Performance
+1. 다른 텍스트를 찾는 데 0.01초 이하로 걸리게 한다.
+2. 텍스트 병합시 0.01초 이하로 걸리게 한다.
+
+Suportability
+1. 텍스트 파일 인코딩 형식
+2. 다국어 지원
+
+Constraints
+
+JUnit and EasyMock, concept of MVC, Java programming language
+
+----------------------------------------------------------
+
+Requirements Dependency Traceaility Table
+
+/**/
+
+----------------------------------------------------------
+
+Development and Target Platform
+1. Windows Operating System
+2. Intel & AMD processors
+3. Eclipse IDE
+
+----------------------------------------------------------
+
+Project Glossary
+
+View : 텍스트를 보여주는 패널
+Load : 텍스트 파일을 불러온다
+Merge : 텍스트 덮어쓰기입니당~
+
+----------------------------------------------------------
+
+Document Revision History
+
+Version : 1.0
+Name(s) : CAU-SWengineering 9 Team
+Change Description : Orignal creation of the SRS.
