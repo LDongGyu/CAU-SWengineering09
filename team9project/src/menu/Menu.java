@@ -8,7 +8,8 @@ public class Menu implements ActionListener{
 	//Menu class콜했을시 기본 틀과 패널과 버튼들
 	JFrame f = new JFrame("Comparing Text");
 	JButton Compare = new JButton("Compare");
-	JButton Merge = new JButton("Merge");
+	JButton LeftMerge = new JButton("LeftMerge");
+	JButton RightMerge = new JButton("RightMerge");
 	JButton EXIT = new JButton("EXIT");
 	
 	JButton LeftLoad = new JButton("Load");
@@ -20,6 +21,7 @@ public class Menu implements ActionListener{
 	JButton RightEdit = new JButton("Edit");
 	JButton RightSave = new JButton("Save");
 	JPanel RightPanel = new JPanel();
+	JTextArea Lefttextfield = new JTextArea("", 50, 50); 
 	
 	
 	public Menu(){
@@ -28,7 +30,7 @@ public class Menu implements ActionListener{
 		
 		//오른쪽 Compare & Merge 부분
 		JPanel menueastPanel = new JPanel();
-		menueastPanel.setLayout(new GridLayout(3,1,4,20));
+		menueastPanel.setLayout(new GridLayout(4,1,4,20));
 		f.add("East", menueastPanel);
 		/*버튼색깔설정할려면 여기서 색깔조정
 		Compare.setBackground(Color.pink);
@@ -36,7 +38,8 @@ public class Menu implements ActionListener{
 		EXIT.setBackground(Color.pink);
 		*/
 		menueastPanel.add("East",Compare);
-		menueastPanel.add("East",Merge);
+		menueastPanel.add("East",LeftMerge);
+		menueastPanel.add("East",RightMerge);
 		menueastPanel.add("East",EXIT);
 
 		//중앙 왼쪽 TextView 부분
@@ -54,7 +57,7 @@ public class Menu implements ActionListener{
 		LeftNorthPanel.add("North",LeftSave);
 		
 		//TextArea를 50행, 50열로 설정합니다.      
-		JTextArea Lefttextfield = new JTextArea("", 50, 50); 
+		Lefttextfield.setEditable(false);
 		LeftPanel.add("Center",new JScrollPane(Lefttextfield));
 
 		
@@ -88,13 +91,25 @@ public class Menu implements ActionListener{
 		Toolkit tk = Toolkit.getDefaultToolkit(); //구현된 Toolkit객체를 얻는다.
 		Dimension screenSize = tk.getScreenSize();
 		
+		//Edit버튼 처음에 텍스트 변경불가해놓고 한번눌렀을시 편집가능하게 실행
+		LeftEdit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if(e.getSource() == LeftEdit){
+        			Lefttextfield.setEditable(true);
+        		}
+            }
+        });
+		
 		f.setLocation(screenSize.width/2 - 450, screenSize.height/2 - 300);
 		f.addWindowListener(new EventHandler());
 		f.setVisible(true);//생성한 Frame을 화면에 보이도록 한다.
 	}
 	
 	public void actionPerformed(ActionEvent e){
-		if(e.getSource() == Merge){
+		if(e.getSource() == LeftMerge){
+			//Merge관련 action시 실행될것들 내용추가
+		}
+		else if(e.getSource() == RightMerge){
 			//Merge관련 action시 실행될것들 내용추가
 		}
 		else if(e.getSource() == Compare){
@@ -104,6 +119,7 @@ public class Menu implements ActionListener{
 			//Load관련 action시 실행될것들 내용추가
 		}
 		else if(e.getSource() == LeftEdit){
+			Lefttextfield.setEditable(true);
 			//Edit관련 action시 실행될것들 내용추가
 		}
 		else if(e.getSource() == LeftSave){
