@@ -3,7 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
-
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import javax.swing.*;
 
 public class Menu {
@@ -32,6 +33,8 @@ public class Menu {
 	private boolean LeftEditonoff = false;
 	private boolean RightEditonoff = false;
 
+	//Dialog창으로 저장하기
+	FileDialog  SaveText = new FileDialog(f,"저장",FileDialog.SAVE);
 	
 	public Menu(){
 		f.setSize(900,600);//화면의 크기를 구함
@@ -55,6 +58,7 @@ public class Menu {
 		LeftPanel.setLayout(new BorderLayout());
 		JPanel LeftNorthPanel = new JPanel();
 		LeftNorthPanel.setLayout(new GridLayout(1,3,4,4));
+		
 		LeftPanel.add("North", LeftNorthPanel);
 		/*버튼색깔설정할려면 여기서 색깔조정
 		LeftLoad.setBackground(Color.pink);
@@ -167,6 +171,27 @@ public class Menu {
 				Lefttextfield.setEditable(LeftEditonoff);
 			}
 			else if(e.getSource() == LeftSave){
+				SaveText.setVisible(true);
+				String data =SaveText.getDirectory()+SaveText.getFile();
+				try{
+					//파일저장시 버퍼를 이용해서 저장하는것이 더 좋다고해서 이렇게 했음
+					FileWriter FW = new FileWriter(data+".txt");
+					BufferedWriter BW = new BufferedWriter(FW);
+					String str = Lefttextfield.getText();
+					for(int i =0; i <str.length();i++)
+					{
+						if(str.charAt(i) == '\n')
+						{
+							BW.newLine();
+						}
+						else
+							BW.write(str.charAt(i));
+					}
+					BW.close();
+					FW.close();
+					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
+					//String Filename = SaveText.getFile();
+				}catch(Exception e1){}
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == RightLoad){
@@ -195,6 +220,27 @@ public class Menu {
 				Righttextfield.setEditable(RightEditonoff);
 			}
 			else if(e.getSource() == RightSave){
+				SaveText.setVisible(true);
+				String data =SaveText.getDirectory()+SaveText.getFile();
+				try{
+					FileWriter FW = new FileWriter(data+".txt");
+					
+					BufferedWriter BW = new BufferedWriter(FW);
+					String str = Righttextfield.getText();
+					for(int i =0; i <str.length();i++)
+					{
+						if(str.charAt(i) == '\n')
+						{
+							BW.newLine();
+						}
+						else
+							BW.write(str.charAt(i));
+					}
+					BW.close();
+					FW.close();
+					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
+					//String Filename = SaveText.getFile();
+				}catch(Exception e1){}
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == EXIT){
@@ -202,10 +248,6 @@ public class Menu {
 				f.dispose();
 				System.exit(0);
 			}
-		}
-		
-		public void fetchTXT(ArrayList<String>txt) {
-			
 		}
 	}
 	
