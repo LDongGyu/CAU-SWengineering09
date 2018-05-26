@@ -1,6 +1,8 @@
 package menu;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import javax.swing.*;
 
@@ -30,6 +32,7 @@ public class Menu {
 	private boolean LeftEditonoff = false;
 	private boolean RightEditonoff = false;
 
+	FileDialog  SaveText = new FileDialog(f,"저장",FileDialog.SAVE);
 	
 	public Menu(){
 		f.setSize(900,600);//화면의 크기를 구함
@@ -53,6 +56,7 @@ public class Menu {
 		LeftPanel.setLayout(new BorderLayout());
 		JPanel LeftNorthPanel = new JPanel();
 		LeftNorthPanel.setLayout(new GridLayout(1,3,4,4));
+		
 		LeftPanel.add("North", LeftNorthPanel);
 		/*버튼색깔설정할려면 여기서 색깔조정
 		LeftLoad.setBackground(Color.pink);
@@ -62,6 +66,7 @@ public class Menu {
 		LeftNorthPanel.add("North",LeftLoad);
 		LeftNorthPanel.add("North",LeftEdit);
 		LeftNorthPanel.add("North",LeftSave);
+		
 		
 		//TextArea를 왼쪽에 추가, textfield는 기본 false로 잠겨있는상태    
 		Lefttextfield.setEditable(LeftEditonoff);
@@ -151,6 +156,26 @@ public class Menu {
 				Lefttextfield.setEditable(LeftEditonoff);
 			}
 			else if(e.getSource() == LeftSave){
+				SaveText.setVisible(true);
+				String data =SaveText.getDirectory()+SaveText.getFile();
+				try{
+					FileWriter fw = new FileWriter(data+".txt");
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					String str = Lefttextfield.getText();
+					for(int i =0; i <str.length();i++)
+					{
+						if(str.charAt(i) == '\n')
+						{
+							bw.newLine();
+						}
+						else
+							bw.write(str.charAt(i));
+					}
+					bw.close();
+					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
+					//String Filename = SaveText.getFile();
+				}catch(Exception e1){}
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == RightLoad){
@@ -171,6 +196,27 @@ public class Menu {
 				Righttextfield.setEditable(RightEditonoff);
 			}
 			else if(e.getSource() == RightSave){
+				SaveText.setVisible(true);
+				String data =SaveText.getDirectory()+SaveText.getFile();
+				try{
+					FileWriter fw = new FileWriter(data+".txt");
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					String str = Righttextfield.getText();
+					for(int i =0; i <str.length();i++)
+					{
+						if(str.charAt(i) == '\n')
+						{
+							bw.newLine();
+						}
+						else
+							bw.write(str.charAt(i));
+					}
+					bw.close();
+					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
+					//String Filename = SaveText.getFile();
+				}catch(Exception e1){}
+				//Save관련 action시 실행될것들 내용추가
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == EXIT){
