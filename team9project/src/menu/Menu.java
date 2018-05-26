@@ -130,8 +130,8 @@ public class Menu {
 		
 		ArrayList<String> leftTXT;  // 왼쪽 파일
 		ArrayList<String> rightTXT; // 오른쪽 파일
-		File leftfile = new File("left");//왼쪽 파일
-		File rightfile = new File("right");	//오른쪽 파일
+		File leftfile = null;//왼쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
+		File rightfile = null;	//오른쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() == LeftMerge){
