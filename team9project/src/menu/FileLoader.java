@@ -22,7 +22,6 @@ public class FileLoader {
 		
 		fileSearch.fileOpen();
 		fileLoad = fileSearch.getFile();
-		
 		try {
 			FileReader filereader = new FileReader(fileLoad); // 입력 스트림
 			BufferedReader bufReader = new BufferedReader(filereader);

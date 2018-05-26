@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import javax.swing.*;
 
 public class Menu {
@@ -132,8 +130,8 @@ public class Menu {
 		
 		ArrayList<String> leftTXT;  // 왼쪽 파일
 		ArrayList<String> rightTXT; // 오른쪽 파일
-		String leftTXT_Directory = new String(); // 왼쪽 파일 디렉토리
-		String rightTXT_Directory = new String(); // 오른쪽 파일 디렉토리
+		File leftfile = new File("left");//왼쪽 파일
+		File rightfile = new File("right");	//오른쪽 파일
 		
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() == LeftMerge){
@@ -149,8 +147,7 @@ public class Menu {
 				//Load관련 action시 실행될것들 내용추가
 				FileLoader load = new FileLoader(); // 탐색기
 				leftTXT = load.fileRead(); // 파일 가져오기
-				leftTXT_Directory = load.getDirectory(); // 경로 저장
-								
+				leftfile = load.fileLoad;
 				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
 				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
 					Lefttextfield.append(leftTXT.get(i)+"\n");
@@ -171,35 +168,14 @@ public class Menu {
 				Lefttextfield.setEditable(LeftEditonoff);
 			}
 			else if(e.getSource() == LeftSave){
-				SaveText.setVisible(true);
-				String data =SaveText.getDirectory()+SaveText.getFile();
-				try{
-					//파일저장시 버퍼를 이용해서 저장하는것이 더 좋다고해서 이렇게 했음
-					FileWriter FW = new FileWriter(data+".txt");
-					BufferedWriter BW = new BufferedWriter(FW);
-					String str = Lefttextfield.getText();
-					for(int i =0; i <str.length();i++)
-					{
-						if(str.charAt(i) == '\n')
-						{
-							BW.newLine();
-						}
-						else
-							BW.write(str.charAt(i));
-					}
-					BW.close();
-					FW.close();
-					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
-					//String Filename = SaveText.getFile();
-				}catch(Exception e1){}
+				new FileSave(leftfile,Lefttextfield);
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == RightLoad){
 				//Load관련 action시 실행될것들 내용추가
 				FileLoader load = new FileLoader(); // 탐색기
 				rightTXT = load.fileRead(); // 파일 가져오기
-				rightTXT_Directory = load.getDirectory(); // 경로 저장
-				
+				rightfile = load.fileLoad;
 				Righttextfield.setText("");
 				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
 					Righttextfield.append(rightTXT.get(i)+"\n");
@@ -220,27 +196,7 @@ public class Menu {
 				Righttextfield.setEditable(RightEditonoff);
 			}
 			else if(e.getSource() == RightSave){
-				SaveText.setVisible(true);
-				String data =SaveText.getDirectory()+SaveText.getFile();
-				try{
-					FileWriter FW = new FileWriter(data+".txt");
-					
-					BufferedWriter BW = new BufferedWriter(FW);
-					String str = Righttextfield.getText();
-					for(int i =0; i <str.length();i++)
-					{
-						if(str.charAt(i) == '\n')
-						{
-							BW.newLine();
-						}
-						else
-							BW.write(str.charAt(i));
-					}
-					BW.close();
-					FW.close();
-					//이부분은 파일이름 그대로가져오는거따라서 조금수정하면됨
-					//String Filename = SaveText.getFile();
-				}catch(Exception e1){}
+				new FileSave(rightfile,Righttextfield);
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == EXIT){
