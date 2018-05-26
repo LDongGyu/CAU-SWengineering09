@@ -168,7 +168,8 @@ public class Menu {
 				Lefttextfield.setEditable(LeftEditonoff);
 			}
 			else if(e.getSource() == LeftSave){
-				new FileSave(leftfile,Lefttextfield);
+				FileSave filesave = new FileSave(leftfile,Lefttextfield);
+				leftfile = filesave.savefile;
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == RightLoad){
@@ -196,7 +197,8 @@ public class Menu {
 				Righttextfield.setEditable(RightEditonoff);
 			}
 			else if(e.getSource() == RightSave){
-				new FileSave(rightfile,Righttextfield);
+				FileSave filesave = new FileSave(rightfile,Righttextfield);
+				rightfile = filesave.savefile;
 				//Save관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == EXIT){
