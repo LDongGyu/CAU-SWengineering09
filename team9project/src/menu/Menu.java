@@ -4,6 +4,11 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 
 public class Menu {
 	//Menu class콜했을시 기본 틀과 패널과 버튼들
@@ -23,20 +28,25 @@ public class Menu {
 	JButton RightSave = new JButton("Save");
 	JPanel RightPanel = new JPanel();
 	
-	//TextArea를 50행, 50열로 설정합니다.      
-	JTextArea Righttextfield = new JTextArea("", 50, 50); 		
-	JTextArea Lefttextfield = new JTextArea("", 50, 50); 
+	//TextPane으로 설정바꾸었음 그래야지 줄별로 색깔변경가능해서      
+	JTextPane Righttextfield = new JTextPane(); 		
+	JTextPane Lefttextfield = new JTextPane(); 
 	
+	//SimpleAttributeSet 생성 
+	SimpleAttributeSet attribute = new SimpleAttributeSet();
+    	
 	//EDIT수정 가능 불가능 용 boolean
 	private boolean LeftEditonoff = false;
 	private boolean RightEditonoff = false;
-
-	//Dialog창으로 저장하기
-	FileDialog  SaveText = new FileDialog(f,"저장",FileDialog.SAVE);
 	
 	public Menu(){
 		f.setSize(900,600);//화면의 크기를 구함
 		f.setLayout(new BorderLayout());
+		
+		//SimpleAttributeSet에서 생성한거고 성질은 넣어주는거 (글자다르게하는부분추가하려고 이 부분 추가 -빨간색진하게밑줄)
+		StyleConstants.setForeground(attribute, Color.red);
+	    StyleConstants.setBold(attribute, true);
+	    StyleConstants.setUnderline(attribute, true);
 		
 		//오른쪽 Compare & Merge 부분
 		JPanel menueastPanel = new JPanel();
@@ -141,6 +151,9 @@ public class Menu {
 				//Merge관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == Compare){
+				//미완성코드임 예시로 처음0에서4까지만변경하도록해보았음 둘중하나로 바꾸는듯?
+				Lefttextfield.getStyledDocument().setCharacterAttributes(4, 8, attribute, false);
+			//	Lefttextfield.getStyledDocument().setParagraphAttributes(4, 8, attribute, false);
 				//Compare관련 action시 실행될것들 내용추가
 			}
 			else if(e.getSource() == LeftLoad){
@@ -150,7 +163,7 @@ public class Menu {
 				leftfile = load.fileLoad;
 				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
 				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
-					Lefttextfield.append(leftTXT.get(i)+"\n");
+					//Lefttextfield.append(leftTXT.get(i)+"\n");
 				}
 			}
 			else if(e.getSource() == LeftEdit){
@@ -179,7 +192,7 @@ public class Menu {
 				rightfile = load.fileLoad;
 				Righttextfield.setText("");
 				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
-					Righttextfield.append(rightTXT.get(i)+"\n");
+					//Righttextfield.append(rightTXT.get(i)+"\n");
 				}
 			}
 			else if(e.getSource() == RightEdit){
