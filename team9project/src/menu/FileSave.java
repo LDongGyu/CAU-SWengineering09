@@ -7,7 +7,7 @@ import java.io.FileWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileSave {
@@ -15,11 +15,11 @@ public class FileSave {
 	File savefile;
 	
 	FileSave(){}
-	FileSave(File f,JTextArea TA){
+	FileSave(File f,JTextPane TA){
 		fileSave(f,TA);
 	}
 	
-	public void fileSave(File f,JTextArea TA) {
+	public void fileSave(File f,JTextPane TA) {
 		
 		JFileChooser fileSearch;
 		if(f == null){
@@ -63,7 +63,7 @@ public class FileSave {
 		}
 	}
 	
-	private void textSave(File f,JTextArea TA){
+	private void textSave(File f,JTextPane TA){
 		try{
 			//기본적으로 텍스트에리어에 있는 파일을 쭉읽어서 파일에 저장
 			FileWriter FW = new FileWriter(f);
