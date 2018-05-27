@@ -10,6 +10,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 
+
 public class Menu {
 	//Menu class콜했을시 기본 틀과 패널과 버튼들
 	JFrame f = new JFrame("Comparing Text");
@@ -30,7 +31,8 @@ public class Menu {
 	
 	//TextPane으로 설정바꾸었음 그래야지 줄별로 색깔변경가능해서      
 	JTextPane Righttextfield = new JTextPane(); 		
-	JTextPane Lefttextfield = new JTextPane(); 
+	JTextPane Lefttextfield = new JTextPane(); 	
+	StyledDocument rightdoc, leftdoc;	
 	
 	//SimpleAttributeSet 생성 
 	SimpleAttributeSet attribute = new SimpleAttributeSet();
