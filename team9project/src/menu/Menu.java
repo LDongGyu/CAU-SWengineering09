@@ -144,11 +144,19 @@ public class Menu {
 		File rightfile = null;	//오른쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		
 		public void actionPerformed(ActionEvent e){
-			if(e.getSource() == LeftMerge){
+			if(e.getSource() == LeftMerge){ // left to right
 				//Merge관련 action시 실행될것들 내용추가
+				String temp = new String();
+				temp = Lefttextfield.getText();
+				Righttextfield.setText("");
+				Righttextfield.setText(temp);
 			}
-			else if(e.getSource() == RightMerge){
+			else if(e.getSource() == RightMerge){ // right to left
 				//Merge관련 action시 실행될것들 내용추가
+				String temp = new String();
+				temp = Righttextfield.getText();
+				Lefttextfield.setText("");
+				Lefttextfield.setText(temp);
 			}
 			else if(e.getSource() == Compare){
 				//미완성코드임 예시로 처음0에서4까지만변경하도록해보았음 둘중하나로 바꾸는듯?
