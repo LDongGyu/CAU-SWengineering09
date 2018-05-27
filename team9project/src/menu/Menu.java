@@ -161,6 +161,58 @@ public class Menu {
 				Lefttextfield.getStyledDocument().setCharacterAttributes(4, 8, attribute, false);
 			//	Lefttextfield.getStyledDocument().setParagraphAttributes(4, 8, attribute, false);
 				//Compare관련 action시 실행될것들 내용추가
+				
+				FileCompare compare = new FileCompare();
+				int max = 10000000;
+				
+				// table 만들기 위해 textfield에서 문자열 가져오기
+				String str_tmp = Lefttextfield.getText();
+				
+				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] left = str_tmp.split("\n", max);
+				
+				str_tmp = Righttextfield.getText();
+				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] right = str_tmp.split("\n", max);
+				
+				// table 만들기
+				int[][] table = compare.makeLCSTable(left, right);
+				int lcsLength = compare.getLcsLength();	// LCS_Length 값을 저장
+				
+				// convert to array -> List
+				// initialize
+				leftTXT = new ArrayList<String>();	
+				for(int i = 1 ; i < left.length ; i++) // copy array to List
+					leftTXT.add(left[i]);
+				
+				// initialize
+				rightTXT = new ArrayList<String>();
+				for(int i = 1 ; i < right.length ; i++) // copy array to List
+					rightTXT.add(right[i]);
+				
+				ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, right);	// lcs 문자열을 구하는 함수가 또 필요하다.
+				compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
+				
+				
+				String lText = new String();
+				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
+				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
+					if(i == leftTXT.size() - 1)
+						lText = lText + leftTXT.get(i);
+					else
+						lText = lText + leftTXT.get(i) + "\n";
+				}
+				Lefttextfield.setText(lText);
+				
+				String rText = new String();
+				Righttextfield.setText(""); // 텍스트필드 초기화 후 출력
+				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 출력
+					if(i == rightTXT.size() - 1)
+						rText = rText + rightTXT.get(i);
+					else
+						rText = rText + rightTXT.get(i) + "\n";
+				}
+				Righttextfield.setText(rText);
 			}
 			else if(e.getSource() == LeftLoad){
 				//Load관련 action시 실행될것들 내용추가
