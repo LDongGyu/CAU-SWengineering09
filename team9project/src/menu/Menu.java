@@ -161,10 +161,12 @@ public class Menu {
 				FileLoader load = new FileLoader(); // 탐색기
 				leftTXT = load.fileRead(); // 파일 가져오기
 				leftfile = load.fileLoad;
+				String lText = new String();
 				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
 				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
-					//Lefttextfield.append(leftTXT.get(i)+"\n");
+					lText = lText + leftTXT.get(i) + "\n";
 				}
+				Lefttextfield.setText(lText);
 			}
 			else if(e.getSource() == LeftEdit){
 				//Edit관련 action시 실행될것들 내용추가
@@ -190,10 +192,12 @@ public class Menu {
 				FileLoader load = new FileLoader(); // 탐색기
 				rightTXT = load.fileRead(); // 파일 가져오기
 				rightfile = load.fileLoad;
+				String rText = new String();
 				Righttextfield.setText("");
 				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
-					//Righttextfield.append(rightTXT.get(i)+"\n");
+					rText = rText + rightTXT.get(i) + "\n";
 				}
+				Righttextfield.setText(rText);
 			}
 			else if(e.getSource() == RightEdit){
 				//Edit관련 action시 실행될것들 내용추가
