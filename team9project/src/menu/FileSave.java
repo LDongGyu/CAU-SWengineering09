@@ -39,6 +39,11 @@ public class FileSave {
 			//불러온파일이 있을경우에는 기본으로 그 파일을 설정해서 저장시 기본적으로 그 파일에 이름으로 저장하도록설정
 			fileSearch.setSelectedFile(f);
 		}
+		else{
+			//처음에 파일이 비어있을경우 이렇게 설정해서 저장시 .txt로 표현되도록 설정하려고 빈파일경로를 .txt로해서 이름으로설정
+			savefile = new File(".txt");
+			fileSearch.setSelectedFile(savefile);
+		}
 		
 		isSave = fileSearch.showSaveDialog(null); // 탐색기 열기
 		
