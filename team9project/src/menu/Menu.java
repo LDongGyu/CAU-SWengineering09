@@ -41,6 +41,10 @@ public class Menu {
 	private boolean LeftEditonoff = false;
 	private boolean RightEditonoff = false;
 	
+	//위쪽에 파일명 추가
+	JLabel LeftName = new JLabel("파일명 : ");
+	JLabel RightName = new JLabel("파일명 : ");
+	
 	public Menu(){
 		f.setSize(900,600);//화면의 크기를 구함
 		f.setLayout(new BorderLayout());
@@ -54,11 +58,6 @@ public class Menu {
 		JPanel menueastPanel = new JPanel();
 		menueastPanel.setLayout(new GridLayout(4,1,4,20));
 		f.add("East", menueastPanel);
-		/*버튼색깔설정할려면 여기서 색깔조정
-		Compare.setBackground(Color.pink);
-		Merge.setBackground(Color.pink);
-		EXIT.setBackground(Color.pink);
-		*/
 		menueastPanel.add("East",Compare);
 		menueastPanel.add("East",LeftMerge);
 		menueastPanel.add("East",RightMerge);
@@ -67,19 +66,18 @@ public class Menu {
 		//중앙 왼쪽 TextView 부분
 		LeftPanel.setLayout(new BorderLayout());
 		JPanel LeftNorthPanel = new JPanel();
-		LeftNorthPanel.setLayout(new GridLayout(1,3,4,4));
+		JPanel LeftNorthPanel2 = new JPanel();
+		LeftNorthPanel.setLayout(new BorderLayout(4,1));
+		LeftNorthPanel2.setLayout(new GridLayout(1,3,4,4));
 		
+		LeftNorthPanel.add("South", LeftName);
+		LeftNorthPanel2.add(LeftLoad);
+		LeftNorthPanel2.add(LeftEdit);
+		LeftNorthPanel2.add(LeftSave);
+		LeftNorthPanel.add("North", LeftNorthPanel2);
 		LeftPanel.add("North", LeftNorthPanel);
-		/*버튼색깔설정할려면 여기서 색깔조정
-		LeftLoad.setBackground(Color.pink);
-		LeftEdit.setBackground(Color.pink);
-		LeftSave.setBackground(Color.pink);
-		*/
-		LeftNorthPanel.add("North",LeftLoad);
-		LeftNorthPanel.add("North",LeftEdit);
-		LeftNorthPanel.add("North",LeftSave);
 		
-		//TextArea를 왼쪽에 추가, textfield는 기본 false로 잠겨있는상태    
+		//TextPane를 왼쪽에 추가, textfield는 기본 false로 잠겨있는상태 
 		Lefttextfield.setEditable(LeftEditonoff);
 		LeftPanel.add("Center",new JScrollPane(Lefttextfield));
 
@@ -87,18 +85,18 @@ public class Menu {
 		//중앙 오른쪽 TextView 부분
 		RightPanel.setLayout(new BorderLayout());
 		JPanel RightNorthPanel = new JPanel();
-		RightNorthPanel.setLayout(new GridLayout(1,3,4,4));
+		JPanel RightNorthPanel2 = new JPanel();
+		RightNorthPanel.setLayout(new BorderLayout(4,1));
+		RightNorthPanel2.setLayout(new GridLayout(1,3,4,4));
+				
+		RightNorthPanel.add("South", RightName);
+		RightNorthPanel2.add("North",RightLoad);
+		RightNorthPanel2.add("North",RightEdit);
+		RightNorthPanel2.add("North",RightSave);
+		RightNorthPanel.add("North", RightNorthPanel2);
 		RightPanel.add("North", RightNorthPanel);
-		/*버튼색깔설정할려면 여기서 색깔조정
-		RightLoad.setBackground(Color.pink);
-		RightEdit.setBackground(Color.pink);
-		RightSave.setBackground(Color.pink);
-		*/
-		RightNorthPanel.add("North",RightLoad);
-		RightNorthPanel.add("North",RightEdit);
-		RightNorthPanel.add("North",RightSave);
-		
-		//TextArea를 오른쪽에 추가, textfield는 기본 false로 잠겨있는상태      
+				
+		//TextPane를 오른쪽에 추가, textfield는 기본 false로 잠겨있는상태       
 		Righttextfield.setEditable(RightEditonoff);
 		RightPanel.add("Center",new JScrollPane(Righttextfield));
 
@@ -165,6 +163,58 @@ public class Menu {
 				Lefttextfield.getStyledDocument().setCharacterAttributes(4, 8, attribute, false);
 			//	Lefttextfield.getStyledDocument().setParagraphAttributes(4, 8, attribute, false);
 				//Compare관련 action시 실행될것들 내용추가
+				
+				FileCompare compare = new FileCompare();
+				int max = 10000000;
+				
+				// table 만들기 위해 textfield에서 문자열 가져오기
+				String str_tmp = Lefttextfield.getText();
+				
+				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] left = str_tmp.split("\n", max);
+				
+				str_tmp = Righttextfield.getText();
+				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] right = str_tmp.split("\n", max);
+				
+				// table 만들기
+				int[][] table = compare.makeLCSTable(left, right);
+				int lcsLength = compare.getLcsLength();	// LCS_Length 값을 저장
+				
+				// convert to array -> List
+				// initialize
+				leftTXT = new ArrayList<String>();	
+				for(int i = 1 ; i < left.length ; i++) // copy array to List
+					leftTXT.add(left[i]);
+				
+				// initialize
+				rightTXT = new ArrayList<String>();
+				for(int i = 1 ; i < right.length ; i++) // copy array to List
+					rightTXT.add(right[i]);
+				
+				ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, right);	// lcs 문자열을 구하는 함수가 또 필요하다.
+				compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
+				
+				
+				String lText = new String();
+				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
+				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
+					if(i == leftTXT.size() - 1)
+						lText = lText + leftTXT.get(i);
+					else
+						lText = lText + leftTXT.get(i) + "\n";
+				}
+				Lefttextfield.setText(lText);
+				
+				String rText = new String();
+				Righttextfield.setText(""); // 텍스트필드 초기화 후 출력
+				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 출력
+					if(i == rightTXT.size() - 1)
+						rText = rText + rightTXT.get(i);
+					else
+						rText = rText + rightTXT.get(i) + "\n";
+				}
+				Righttextfield.setText(rText);
 			}
 			else if(e.getSource() == LeftLoad){
 				//Load관련 action시 실행될것들 내용추가
@@ -177,6 +227,7 @@ public class Menu {
 					lText = lText + leftTXT.get(i) + "\n";
 				}
 				Lefttextfield.setText(lText);
+				LeftName.setText("파일명 : "+leftfile.getName());
 			}
 			else if(e.getSource() == LeftEdit){
 				//Edit관련 action시 실행될것들 내용추가
@@ -208,6 +259,7 @@ public class Menu {
 					rText = rText + rightTXT.get(i) + "\n";
 				}
 				Righttextfield.setText(rText);
+				RightName.setText("파일명 : "+rightfile.getName());
 			}
 			else if(e.getSource() == RightEdit){
 				//Edit관련 action시 실행될것들 내용추가
