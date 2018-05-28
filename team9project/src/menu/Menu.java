@@ -143,19 +143,59 @@ public class Menu {
 		File rightfile = null;	//오른쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		
 		public void actionPerformed(ActionEvent e){
-			if(e.getSource() == LeftMerge){ // left to right
+			if(e.getSource() == LeftMerge){ // right to left
 				//Merge관련 action시 실행될것들 내용추가
-				String temp = new String();
-				temp = Lefttextfield.getText();
-				Righttextfield.setText("");
-				Righttextfield.setText(temp);
-			}
-			else if(e.getSource() == RightMerge){ // right to left
-				//Merge관련 action시 실행될것들 내용추가
-				String temp = new String();
-				temp = Righttextfield.getText();
+				String[] sychright = Righttextfield.getText().split("\r\n",100000);
+				String[] sychleft = Lefttextfield.getText().split("\r\n",100000);
+				ArrayList<String> left = new ArrayList<String>();
+				ArrayList<String> right = new ArrayList<String>();
+					
+				for(int i = 0; i < sychright.length ; i++) {
+					right.add(sychright[i]);
+				}
+				for(int i = 0; i < sychleft.length ; i++) {
+					left.add(sychleft[i]);
+				}
+				
+				for(int i = 0; i < differ_index.size(); i++) {
+					if(right.get(differ_index.get(i)).equals("")) {
+							continue;
+					}
+					left.set(differ_index.get(i), right.get(differ_index.get(i)));
+				}
 				Lefttextfield.setText("");
-				Lefttextfield.setText(temp);
+				String lText = new String();
+				for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+					lText = lText + left.get(i) + "\r\n";
+				}
+				Lefttextfield.setText(lText);
+			}
+			else if(e.getSource() == RightMerge){ // left to right
+				//Merge관련 action시 실행될것들 내용추가
+				String[] sychright = Righttextfield.getText().split("\r\n",100000);
+				String[] sychleft = Lefttextfield.getText().split("\r\n",100000);
+				ArrayList<String> left = new ArrayList<String>();
+				ArrayList<String> right = new ArrayList<String>();
+					
+				for(int i = 0; i < sychright.length ; i++) {
+					right.add(sychright[i]);
+				}
+				for(int i = 0; i < sychleft.length ; i++) {
+					left.add(sychleft[i]);
+				}
+				
+				for(int i = 0; i < differ_index.size(); i++) {
+					if(!left.get(differ_index.get(i)).equals("")) {
+						right.set(differ_index.get(i), left.get(differ_index.get(i)));	
+					}
+					
+				}
+				Righttextfield.setText("");
+				String rText = new String();
+				for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+					rText = rText + right.get(i) + "\r\n";
+				}
+				Righttextfield.setText(rText);
 			}
 			else if(e.getSource() == Compare){
 				//미완성코드임 예시로 처음0에서4까지만변경하도록해보았음 둘중하나로 바꾸는듯?
@@ -227,7 +267,7 @@ public class Menu {
 				String lText = new String();
 				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
 				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
-					lText = lText + leftTXT.get(i) + "\n";
+					lText = lText + leftTXT.get(i) + "\r\n";
 				}
 				Lefttextfield.setText(lText);
 				LeftName.setText("파일명 : "+leftfile.getName());
@@ -259,7 +299,7 @@ public class Menu {
 				String rText = new String();
 				Righttextfield.setText("");
 				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
-					rText = rText + rightTXT.get(i) + "\n";
+					rText = rText + rightTXT.get(i) + "\r\n";
 				}
 				Righttextfield.setText(rText);
 				RightName.setText("파일명 : "+rightfile.getName());
