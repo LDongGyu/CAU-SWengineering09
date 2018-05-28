@@ -138,6 +138,7 @@ public class Menu {
 		
 		ArrayList<String> leftTXT;  // 왼쪽 파일
 		ArrayList<String> rightTXT; // 오른쪽 파일
+		ArrayList<Integer> differ_index = null;	// 다른 부분 인덱스 저장배열
 		File leftfile = null;//왼쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		File rightfile = null;	//오른쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		
@@ -168,12 +169,13 @@ public class Menu {
 				// table 만들기 위해 textfield에서 문자열 가져오기
 				String str_tmp = Lefttextfield.getText();
 				
-				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
-				String[] left = str_tmp.split("\n", max);
+				str_tmp = "0" + "\r\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] left = str_tmp.split("\r\n", max);
+				
 				
 				str_tmp = Righttextfield.getText();
-				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
-				String[] right = str_tmp.split("\n", max);
+				str_tmp = "0" + "\r\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] right = str_tmp.split("\r\n", max);
 				
 				// table 만들기
 				int[][] table = compare.makeLCSTable(left, right);
@@ -200,7 +202,7 @@ public class Menu {
 					if(i == leftTXT.size() - 1)
 						lText = lText + leftTXT.get(i);
 					else
-						lText = lText + leftTXT.get(i) + "\n";
+						lText = lText + leftTXT.get(i) + "\r\n";
 				}
 				Lefttextfield.setText(lText);
 				
@@ -210,9 +212,12 @@ public class Menu {
 					if(i == rightTXT.size() - 1)
 						rText = rText + rightTXT.get(i);
 					else
-						rText = rText + rightTXT.get(i) + "\n";
+						rText = rText + rightTXT.get(i) + "\r\n";
 				}
 				Righttextfield.setText(rText);
+				
+				// 이부분은 서로 다른 부분의 인덱스를 얻어준다
+				differ_index = compare.getDifferentLineNumberIndex(leftTXT, rightTXT);
 			}
 			else if(e.getSource() == LeftLoad){
 				//Load관련 action시 실행될것들 내용추가
