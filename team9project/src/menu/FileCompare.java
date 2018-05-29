@@ -57,6 +57,18 @@ public class FileCompare {
 		return table;
 	}
 	
+	public ArrayList<Integer> getDifferentLineNumberIndex(ArrayList<String> left, ArrayList<String> right) {
+		ArrayList<Integer> differ_index = new ArrayList<Integer>();
+		
+		for(int i = 0; i < left.size(); i++) {
+			if(left.get(i).equals(right.get(i)))	
+				continue;
+			else									// 다른 경우, 그부분의 인덱스를 저장
+				differ_index.add(i);
+		}
+		return differ_index;
+	}
+	
 	public ArrayList<String> makeLCSString(int leftLength, int rightLength, int lcsLength, int[][] table, String[] str2) // 0 이 포함된 문자열길이
 	{
 		ArrayList<String> lcs = new ArrayList<String>();
@@ -84,18 +96,25 @@ public class FileCompare {
 		/*int originLeftLength = left.size(), originRightLength = right.size();*/
 		for(int i = 0, j = 0, k = 0 ; ; ) {
 			if(k == lcs.size()) {
-				if(i < left.size()) {
-					right.add(j, "");
-					i++;
-					j++;
-				}
-				else if(j < right.size()) {
+				if(i == left.size() && j == right.size())
+					break;
+				if(i == left.size()) // 왼쪽이 끝났을 경우
+				{
 					left.add(i, "");
 					i++;
 					j++;
 				}
-				else
-					break;
+				else if(j == right.size()) // 오른쪽이 끝났을 경우
+				{
+					right.add(i, "");
+					i++;
+					j++;
+				}
+				else // 둘다 안끝난 경우
+				{
+					i++;
+					j++;
+				}
 			}
 			else if(left.get(i).equals(lcs.get(k)) && right.get(j).equals(lcs.get(k))) {
 				i++; j++; k++; 

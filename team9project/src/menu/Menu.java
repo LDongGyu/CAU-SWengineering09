@@ -140,23 +140,64 @@ public class Menu {
 		
 		ArrayList<String> leftTXT;  // 왼쪽 파일
 		ArrayList<String> rightTXT; // 오른쪽 파일
+		ArrayList<Integer> differ_index = null;	// 다른 부분 인덱스 저장배열
 		File leftfile = null;//왼쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		File rightfile = null;	//오른쪽 파일 처음에 비어있도록설정 이쪽 패널에 로드시 파일에관한 내용이들어가도록해서 Save에 영향을줌
 		
 		public void actionPerformed(ActionEvent e){
-			if(e.getSource() == LeftMerge){ // left to right
+			if(e.getSource() == LeftMerge){ // right to left
 				//Merge관련 action시 실행될것들 내용추가
-				String temp = new String();
-				temp = Lefttextfield.getText();
-				Righttextfield.setText("");
-				Righttextfield.setText(temp);
-			}
-			else if(e.getSource() == RightMerge){ // right to left
-				//Merge관련 action시 실행될것들 내용추가
-				String temp = new String();
-				temp = Righttextfield.getText();
+				String[] sychright = Righttextfield.getText().split("\r\n",100000);
+				String[] sychleft = Lefttextfield.getText().split("\r\n",100000);
+				ArrayList<String> left = new ArrayList<String>();
+				ArrayList<String> right = new ArrayList<String>();
+					
+				for(int i = 0; i < sychright.length ; i++) {
+					right.add(sychright[i]);
+				}
+				for(int i = 0; i < sychleft.length ; i++) {
+					left.add(sychleft[i]);
+				}
+				
+				for(int i = 0; i < differ_index.size(); i++) {
+					if(right.get(differ_index.get(i)).equals("")) {
+							continue;
+					}
+					left.set(differ_index.get(i), right.get(differ_index.get(i)));
+				}
 				Lefttextfield.setText("");
-				Lefttextfield.setText(temp);
+				String lText = new String();
+				for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+					lText = lText + left.get(i) + "\r\n";
+				}
+				Lefttextfield.setText(lText);
+			}
+			else if(e.getSource() == RightMerge){ // left to right
+				//Merge관련 action시 실행될것들 내용추가
+				String[] sychright = Righttextfield.getText().split("\r\n",100000);
+				String[] sychleft = Lefttextfield.getText().split("\r\n",100000);
+				ArrayList<String> left = new ArrayList<String>();
+				ArrayList<String> right = new ArrayList<String>();
+					
+				for(int i = 0; i < sychright.length ; i++) {
+					right.add(sychright[i]);
+				}
+				for(int i = 0; i < sychleft.length ; i++) {
+					left.add(sychleft[i]);
+				}
+				
+				for(int i = 0; i < differ_index.size(); i++) {
+					if(!left.get(differ_index.get(i)).equals("")) {
+						right.set(differ_index.get(i), left.get(differ_index.get(i)));	
+					}
+					
+				}
+				Righttextfield.setText("");
+				String rText = new String();
+				for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+					rText = rText + right.get(i) + "\r\n";
+				}
+				Righttextfield.setText(rText);
 			}
 			else if(e.getSource() == Compare){
 				//미완성코드임 예시로 처음0에서4까지만변경하도록해보았음 둘중하나로 바꾸는듯?
@@ -170,12 +211,13 @@ public class Menu {
 				// table 만들기 위해 textfield에서 문자열 가져오기
 				String str_tmp = Lefttextfield.getText();
 				
-				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
-				String[] left = str_tmp.split("\n", max);
+				str_tmp = "0" + "\r\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] left = str_tmp.split("\r\n", max);
+				
 				
 				str_tmp = Righttextfield.getText();
-				str_tmp = "0" + "\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
-				String[] right = str_tmp.split("\n", max);
+				str_tmp = "0" + "\r\n" + str_tmp;	// 테이블 특징상 문자열 앞에 0 처리
+				String[] right = str_tmp.split("\r\n", max);
 				
 				// table 만들기
 				int[][] table = compare.makeLCSTable(left, right);
@@ -202,7 +244,7 @@ public class Menu {
 					if(i == leftTXT.size() - 1)
 						lText = lText + leftTXT.get(i);
 					else
-						lText = lText + leftTXT.get(i) + "\n";
+						lText = lText + leftTXT.get(i) + "\r\n";
 				}
 				Lefttextfield.setText(lText);
 				
@@ -212,9 +254,12 @@ public class Menu {
 					if(i == rightTXT.size() - 1)
 						rText = rText + rightTXT.get(i);
 					else
-						rText = rText + rightTXT.get(i) + "\n";
+						rText = rText + rightTXT.get(i) + "\r\n";
 				}
 				Righttextfield.setText(rText);
+				
+				// 이부분은 서로 다른 부분의 인덱스를 얻어준다
+				differ_index = compare.getDifferentLineNumberIndex(leftTXT, rightTXT);
 			}
 			else if(e.getSource() == LeftLoad){
 				//Load관련 action시 실행될것들 내용추가
@@ -224,7 +269,7 @@ public class Menu {
 				String lText = new String();
 				Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
 				for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
-					lText = lText + leftTXT.get(i) + "\n";
+					lText = lText + leftTXT.get(i) + "\r\n";
 				}
 				Lefttextfield.setText(lText);
 				LeftName.setText("파일명 : "+leftfile.getName());
@@ -256,7 +301,7 @@ public class Menu {
 				String rText = new String();
 				Righttextfield.setText("");
 				for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
-					rText = rText + rightTXT.get(i) + "\n";
+					rText = rText + rightTXT.get(i) + "\r\n";
 				}
 				Righttextfield.setText(rText);
 				RightName.setText("파일명 : "+rightfile.getName());
