@@ -1,5 +1,6 @@
 package menu;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -99,9 +100,9 @@ public class Filecontroller implements ActionListener {
             view.Righttextfield.setText(rText);
         }
         else if(e.getSource() == view.Compare){
-            //미완성코드임 예시로 처음0에서4까지만변경하도록해보았음 둘중하나로 바꾸는듯?
-            view.Lefttextfield.getStyledDocument().setCharacterAttributes(4, 8, view.attribute, false);
-        //  Lefttextfield.getStyledDocument().setParagraphAttributes(4, 8, attribute, false);
+            //비교후 다시 비교할수도 있으니 맨 처음 기본설정으로 초기화
+        	view.Righttextfield.getStyledDocument().setParagraphAttributes(0, (view.Righttextfield.getX()*view.Righttextfield.getY()), view.firstattribute, false);
+        	view.Lefttextfield.getStyledDocument().setParagraphAttributes(0, (view.Lefttextfield.getX()*view.Lefttextfield.getY()), view.firstattribute, false);
             //Compare관련 action시 실행될것들 내용추가
             
             FileCompare compare = new FileCompare();
@@ -160,8 +161,28 @@ public class Filecontroller implements ActionListener {
             // 이부분은 서로 다른 부분의 인덱스를 얻어준다
             model.setdiff(compare.getDifferentLineNumberIndex(leftTXT, rightTXT));
             
-            view.Lefttextfield.getStyledDocument().setCharacterAttributes(4, 8, view.attribute, false);
-            //  
+            //다른부분 색입히기
+            int cont=0;
+            int diff=0;
+            for(int j=0;j<leftTXT.size();j++){
+            	if(diff<model.getdiff().size()){
+            		if(model.getdiff().get(diff) == j){
+            			view.Lefttextfield.getStyledDocument().setParagraphAttributes(cont, 1, view.attribute, false);
+            			diff++;
+            		}	
+            	}
+                cont += leftTXT.get(j).length()+1;
+            }
+            cont=0;diff=0;
+            for(int j=0;j<rightTXT.size();j++){
+            	if(diff<model.getdiff().size()){
+            		if(model.getdiff().get(diff) == j){
+            			view.Righttextfield.getStyledDocument().setParagraphAttributes(cont, 1, view.attribute, false);
+            			diff++;
+            		}
+            	}
+             	cont += rightTXT.get(j).length()+1;
+            }
         }
         else if(e.getSource() == view.LeftLoad){
             //Load관련 action시 실행될것들 내용추가
