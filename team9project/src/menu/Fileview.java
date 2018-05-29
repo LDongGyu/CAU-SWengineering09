@@ -45,6 +45,7 @@ public class Fileview {
         
         //SimpleAttributeSet 생성 
         SimpleAttributeSet attribute = new SimpleAttributeSet();
+        SimpleAttributeSet firstattribute = new SimpleAttributeSet();
             
         //EDIT수정 가능 불가능 용 boolean
         boolean LeftEditonoff = false;
@@ -57,11 +58,17 @@ public class Fileview {
         public Fileview(){
             f.setSize(900,600);//화면의 크기를 구함
             f.setLayout(new BorderLayout());
-            
+
             //SimpleAttributeSet에서 생성한거고 성질은 넣어주는거 (글자다르게하는부분추가하려고 이 부분 추가 -빨간색진하게밑줄)
             StyleConstants.setForeground(attribute, Color.red);
+            StyleConstants.setBackground(attribute, Color.blue);
             StyleConstants.setBold(attribute, true);
             StyleConstants.setUnderline(attribute, true);
+            
+            //제일처음에 나오는 기본 텍스트필드 속성
+            StyleConstants.setForeground(firstattribute, Color.black);
+            StyleConstants.setBold(firstattribute, false);
+            StyleConstants.setUnderline(firstattribute, false);
             
             //오른쪽 Compare & Merge 부분
             JPanel menueastPanel = new JPanel();
