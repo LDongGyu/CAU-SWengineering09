@@ -32,6 +32,7 @@ public class FileCompareTest {
                                                                     {0,1,2,2,2},
                                                                     {0,1,2,3,3},
                                                                     {0,1,2,3,4}});
+        
         left = new String[]{"A", "AA", "AAA", "AAAA", "AAA", "AA", "A"};
         right = new String[]{"AA", "AA", "AA", "AA", "AA", "AA", "AA"};
         
@@ -44,9 +45,18 @@ public class FileCompareTest {
                                                                     {0,1,1,1,1,2,2},
                                                                     {0,1,1,1,1,2,2}});        
         
+        left = new String[]{"XXX", "X X", " X ", "XXX"};
+        right = new String[]{"XXX", " X ", "X X", "XX "};
+        
+        assertArrayEquals(fc.makeLCSTable(left, right), new int[][]{{0,0,0,0},
+                                                                    {0,0,1,1},
+                                                                    {0,1,1,1},
+                                                                    {0,1,1,1}});
+        } 
+        
                 
     }
     
   
 
-}
+
