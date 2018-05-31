@@ -60,13 +60,12 @@ public class Fileview {
             f.setLayout(new BorderLayout());
 
             //SimpleAttributeSet에서 생성한거고 성질은 넣어주는거 (글자다르게하는부분추가하려고 이 부분 추가 -빨간색진하게밑줄)
-            StyleConstants.setForeground(attribute, Color.red);
-            StyleConstants.setBackground(attribute, Color.blue);
+            StyleConstants.setBackground(attribute, Color.orange);
             StyleConstants.setBold(attribute, true);
             StyleConstants.setUnderline(attribute, true);
-            
+
             //제일처음에 나오는 기본 텍스트필드 속성
-            StyleConstants.setForeground(firstattribute, Color.black);
+            StyleConstants.setBackground(firstattribute, Color.white);
             StyleConstants.setBold(firstattribute, false);
             StyleConstants.setUnderline(firstattribute, false);
             

@@ -167,7 +167,7 @@ public class Filecontroller implements ActionListener {
             for(int j=0;j<leftTXT.size();j++){
             	if(diff<model.getdiff().size()){
             		if(model.getdiff().get(diff) == j){
-            			view.Lefttextfield.getStyledDocument().setParagraphAttributes(cont, 1, view.attribute, false);
+            			view.Lefttextfield.getStyledDocument().setCharacterAttributes(cont, leftTXT.get(j).length(), view.attribute, false);
             			diff++;
             		}	
             	}
@@ -177,7 +177,7 @@ public class Filecontroller implements ActionListener {
             for(int j=0;j<rightTXT.size();j++){
             	if(diff<model.getdiff().size()){
             		if(model.getdiff().get(diff) == j){
-            			view.Righttextfield.getStyledDocument().setParagraphAttributes(cont, 1, view.attribute, false);
+            			view.Righttextfield.getStyledDocument().setCharacterAttributes(cont, rightTXT.get(j).length(), view.attribute, false);
             			diff++;
             		}
             	}
