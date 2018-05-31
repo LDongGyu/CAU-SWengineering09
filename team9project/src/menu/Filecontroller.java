@@ -134,7 +134,7 @@ public class Filecontroller implements ActionListener {
             for(int i = 1 ; i < right.length ; i++) // copy array to List
                 rightTXT.add(right[i]);
             
-            ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, right);  // lcs 문자열을 구하는 함수가 또 필요하다.
+			ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, left, right);	// lcs 문자열을 구하는 함수가 또 필요하다.
             compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
             
             
