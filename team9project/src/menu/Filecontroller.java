@@ -20,6 +20,10 @@ public class Filecontroller implements ActionListener {
     private ArrayList<String> leftTXT;  // 왼쪽 파일
     private ArrayList<String> rightTXT; // 오른쪽 파일
     
+    // compare 버튼 비활성화 및 내용수정시 다시 활성화 시키기 위해 수정전과 후를 비교하기 위한 변수
+    private String Before_left = "";
+    private String Before_right = "";
+    
     
     public Filecontroller(Fileview view, Filemodel model){
         this.view = view;
@@ -100,89 +104,97 @@ public class Filecontroller implements ActionListener {
             view.Righttextfield.setText(rText);
         }
         else if(e.getSource() == view.Compare){
-            //비교후 다시 비교할수도 있으니 맨 처음 기본설정으로 초기화
-        	view.Righttextfield.getStyledDocument().setParagraphAttributes(0, (view.Righttextfield.getX()*view.Righttextfield.getY()), view.firstattribute, false);
-        	view.Lefttextfield.getStyledDocument().setParagraphAttributes(0, (view.Lefttextfield.getX()*view.Lefttextfield.getY()), view.firstattribute, false);
-            //Compare관련 action시 실행될것들 내용추가
+        	// 컴페어 버튼을 비활성화시킬지 결정한다.
+        	if(Before_left.equals(view.Lefttextfield.getText()) && Before_right.equals(view.Righttextfield.getText()))
+        		;
+        	else {
+        		//비교후 다시 비교할수도 있으니 맨 처음 기본설정으로 초기화
+            	view.Righttextfield.getStyledDocument().setParagraphAttributes(0, (view.Righttextfield.getX()*view.Righttextfield.getY()), view.firstattribute, false);
+            	view.Lefttextfield.getStyledDocument().setParagraphAttributes(0, (view.Lefttextfield.getX()*view.Lefttextfield.getY()), view.firstattribute, false);
+                //Compare관련 action시 실행될것들 내용추가
+                
+                FileCompare compare = new FileCompare();
+                int max = 10000000;
+                
+                // table 만들기 위해 textfield에서 문자열 가져오기
+                String str_tmp = view.Lefttextfield.getText();
+                
+                str_tmp = "0" + "\r\n" + str_tmp;   // 테이블 특징상 문자열 앞에 0 처리
+                String[] left = str_tmp.split("\r\n", max);
+                
+                
+                str_tmp = view.Righttextfield.getText();
+                str_tmp = "0" + "\r\n" + str_tmp;   // 테이블 특징상 문자열 앞에 0 처리
+                String[] right = str_tmp.split("\r\n", max);
+                
+                // table 만들기
+                int[][] table = compare.makeLCSTable(left, right);
+                int lcsLength = compare.getLcsLength(); // LCS_Length 값을 저장
+                
+                // convert to array -> List
+                // initialize
+                leftTXT = new ArrayList<String>();  
+                for(int i = 1 ; i < left.length ; i++) // copy array to List
+                    leftTXT.add(left[i]);
+                
+                // initialize
+                rightTXT = new ArrayList<String>();
+                for(int i = 1 ; i < right.length ; i++) // copy array to List
+                    rightTXT.add(right[i]);
+                
+                ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, right);  // lcs 문자열을 구하는 함수가 또 필요하다.
+                compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
+                
+                String lText = new String();
+                view.Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
+                for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
+                    if(i == leftTXT.size() - 1)
+                        lText = lText + leftTXT.get(i);
+                    else
+                        lText = lText + leftTXT.get(i) + "\r\n";
+                }
+                view.Lefttextfield.setText(lText);
+                
+                String rText = new String();
+                view.Righttextfield.setText(""); // 텍스트필드 초기화 후 출력
+                for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 출력
+                    if(i == rightTXT.size() - 1)
+                        rText = rText + rightTXT.get(i);
+                    else
+                        rText = rText + rightTXT.get(i) + "\r\n";
+                }
+                view.Righttextfield.setText(rText);
+                
+                // 이부분은 서로 다른 부분의 인덱스를 얻어준다
+                model.setdiff(compare.getDifferentLineNumberIndex(leftTXT, rightTXT));
+                
+                //다른부분 색입히기
+                int cont = 0;
+                int diff = 0;
+                for(int j = 0; j < leftTXT.size(); j++) {
+                	if(diff < model.getdiff().size()){
+                		if(model.getdiff().get(diff) == j){
+                			view.Lefttextfield.getStyledDocument().setCharacterAttributes(cont, leftTXT.get(j).length(), view.attribute, false);
+                			diff++;
+                		}	
+                	}
+                    cont += leftTXT.get(j).length() + 1;
+                }
+                cont = 0; diff = 0;
+                for(int j = 0; j < rightTXT.size(); j++) {
+                	if(diff < model.getdiff().size()){
+                		if(model.getdiff().get(diff) == j){
+                			view.Righttextfield.getStyledDocument().setCharacterAttributes(cont, rightTXT.get(j).length(), view.attribute, false);
+                			diff++;
+                		}
+                	}
+                 	cont += rightTXT.get(j).length() + 1;
+                }
+            // 수정된 문자열로 최신화해 컴페어 버튼을 비활성화할지 검사하게 한다
+            Before_left = view.Lefttextfield.getText();
+            Before_right = view.Righttextfield.getText();
+        	}
             
-            FileCompare compare = new FileCompare();
-            int max = 10000000;
-            
-            // table 만들기 위해 textfield에서 문자열 가져오기
-            String str_tmp = view.Lefttextfield.getText();
-            
-            str_tmp = "0" + "\r\n" + str_tmp;   // 테이블 특징상 문자열 앞에 0 처리
-            String[] left = str_tmp.split("\r\n", max);
-            
-            
-            str_tmp = view.Righttextfield.getText();
-            str_tmp = "0" + "\r\n" + str_tmp;   // 테이블 특징상 문자열 앞에 0 처리
-            String[] right = str_tmp.split("\r\n", max);
-            
-            // table 만들기
-            int[][] table = compare.makeLCSTable(left, right);
-            int lcsLength = compare.getLcsLength(); // LCS_Length 값을 저장
-            
-            // convert to array -> List
-            // initialize
-            leftTXT = new ArrayList<String>();  
-            for(int i = 1 ; i < left.length ; i++) // copy array to List
-                leftTXT.add(left[i]);
-            
-            // initialize
-            rightTXT = new ArrayList<String>();
-            for(int i = 1 ; i < right.length ; i++) // copy array to List
-                rightTXT.add(right[i]);
-            
-			ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, left, right);	// lcs 문자열을 구하는 함수가 또 필요하다.
-            compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
-            
-            
-            String lText = new String();
-            view.Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
-            for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
-                if(i == leftTXT.size() - 1)
-                    lText = lText + leftTXT.get(i);
-                else
-                    lText = lText + leftTXT.get(i) + "\r\n";
-            }
-            view.Lefttextfield.setText(lText);
-            
-            String rText = new String();
-            view.Righttextfield.setText(""); // 텍스트필드 초기화 후 출력
-            for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 출력
-                if(i == rightTXT.size() - 1)
-                    rText = rText + rightTXT.get(i);
-                else
-                    rText = rText + rightTXT.get(i) + "\r\n";
-            }
-            view.Righttextfield.setText(rText);
-            
-            // 이부분은 서로 다른 부분의 인덱스를 얻어준다
-            model.setdiff(compare.getDifferentLineNumberIndex(leftTXT, rightTXT));
-            
-            //다른부분 색입히기
-            int cont=0;
-            int diff=0;
-            for(int j=0;j<leftTXT.size();j++){
-            	if(diff<model.getdiff().size()){
-            		if(model.getdiff().get(diff) == j){
-            			view.Lefttextfield.getStyledDocument().setCharacterAttributes(cont, leftTXT.get(j).length(), view.attribute, false);
-            			diff++;
-            		}	
-            	}
-                cont += leftTXT.get(j).length()+1;
-            }
-            cont=0;diff=0;
-            for(int j=0;j<rightTXT.size();j++){
-            	if(diff<model.getdiff().size()){
-            		if(model.getdiff().get(diff) == j){
-            			view.Righttextfield.getStyledDocument().setCharacterAttributes(cont, rightTXT.get(j).length(), view.attribute, false);
-            			diff++;
-            		}
-            	}
-             	cont += rightTXT.get(j).length()+1;
-            }
         }
         else if(e.getSource() == view.LeftLoad){
             //Load관련 action시 실행될것들 내용추가
