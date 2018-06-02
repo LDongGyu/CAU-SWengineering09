@@ -62,17 +62,29 @@ public class Filecontroller implements ActionListener {
                 left.add(sychleft[i]);
             }
             for(int i = 0; i < model.getdiff().size(); i++) {
-                if(right.get(model.getdiff().get(i)).equals("")) {
-                        continue;
-                }
+
                 left.set(model.getdiff().get(i), right.get(model.getdiff().get(i)));
             }
             view.Lefttextfield.setText("");
             String lText = new String();
             for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+            	if(left.get(i).equals("")) {
+            		continue;
+            	}
                 lText = lText + left.get(i) + "\r\n";
             }
             view.Lefttextfield.setText(lText);
+            
+            view.Righttextfield.setText("");
+            String rText = new String();
+            for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+            	if(right.get(i).equals("")) {
+            		continue;
+            	}
+                rText = rText + right.get(i) + "\r\n";
+            }
+            view.Righttextfield.setText(rText);
+            
         }
         else if(e.getSource() == view.RightMerge){ // left to right
             //Merge관련 action시 실행될것들 내용추가
@@ -91,17 +103,27 @@ public class Filecontroller implements ActionListener {
             
             
             for(int i = 0; i < model.getdiff().size(); i++) {
-                if(!left.get(model.getdiff().get(i)).equals("")) {
                     right.set(model.getdiff().get(i), left.get(model.getdiff().get(i)));  
-                }
-                
             }
             view.Righttextfield.setText("");
             String rText = new String();
             for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+            	if(right.get(i).equals("")) {
+            		continue;
+            	}
                 rText = rText + right.get(i) + "\r\n";
             }
             view.Righttextfield.setText(rText);
+            
+            view.Lefttextfield.setText("");
+            String lText = new String();
+            for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+            	if(left.get(i).equals("")) {
+            		continue;
+            	}
+                lText = lText + left.get(i) + "\r\n";
+            }
+            view.Lefttextfield.setText(lText);
         }
         else if(e.getSource() == view.Compare){
         	// 컴페어 버튼을 비활성화시킬지 결정한다.
