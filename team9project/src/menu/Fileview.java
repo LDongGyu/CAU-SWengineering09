@@ -55,6 +55,8 @@ public class Fileview {
         JLabel LeftName = new JLabel("파일명 : ");
         JLabel RightName = new JLabel("파일명 : ");
         
+        private EventHandler eventhandler = new EventHandler();
+        
         public Fileview(){
             f.setSize(900,600);//화면의 크기를 구함
             f.setLayout(new BorderLayout());
@@ -133,7 +135,7 @@ public class Fileview {
             f.setLocation(screenSize.width/2 - 450, screenSize.height/2 - 300);
 
             //오른쪽위 닫기버튼 실행시 프로그램종료되도록설정
-            f.addWindowListener(new EventHandler());
+            f.addWindowListener(eventhandler);
             
             //생성한 Frame을 화면에 보이도록 한다.
             f.setVisible(true);

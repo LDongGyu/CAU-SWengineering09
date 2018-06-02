@@ -24,6 +24,9 @@ public class Filecontroller implements ActionListener {
     private String Before_left = "";
     private String Before_right = "";
     
+    private FileLoader load;
+    private FileCompare compare;
+    private FileSave filesave;
     
     public Filecontroller(Fileview view, Filemodel model){
         this.view = view;
@@ -135,7 +138,7 @@ public class Filecontroller implements ActionListener {
             	view.Lefttextfield.getStyledDocument().setParagraphAttributes(0, (view.Lefttextfield.getX()*view.Lefttextfield.getY()), view.firstattribute, false);
                 //Compare관련 action시 실행될것들 내용추가
                 
-                FileCompare compare = new FileCompare();
+                compare = new FileCompare();
                 int max = 10000000;
                 
                 // table 만들기 위해 textfield에서 문자열 가져오기
@@ -220,7 +223,7 @@ public class Filecontroller implements ActionListener {
         }
         else if(e.getSource() == view.LeftLoad){
             //Load관련 action시 실행될것들 내용추가
-            FileLoader load = new FileLoader(); // 탐색기
+            load = new FileLoader(); // 탐색기
             leftTXT = load.fileRead(); // 파일 가져오기
             model.setLeftFile(load.fileLoad);
             String lText = new String();
@@ -255,13 +258,13 @@ public class Filecontroller implements ActionListener {
             view.Lefttextfield.setEditable(view.LeftEditonoff);
         }
         else if(e.getSource() == view.LeftSave){
-            FileSave filesave = new FileSave(model.getLeftFile(),view.Lefttextfield);
+            filesave = new FileSave(model.getLeftFile(),view.Lefttextfield);
             model.setLeftFile(filesave.savefile);
             //Save관련 action시 실행될것들 내용추가
         }
         else if(e.getSource() == view.RightLoad){
             //Load관련 action시 실행될것들 내용추가
-            FileLoader load = new FileLoader(); // 탐색기
+            load = new FileLoader(); // 탐색기
             rightTXT = load.fileRead(); // 파일 가져오기
             model.setRightFile(load.fileLoad);
             String rText = new String();
@@ -295,7 +298,7 @@ public class Filecontroller implements ActionListener {
             view.Righttextfield.setEditable(view.RightEditonoff);
         }
         else if(e.getSource() == view.RightSave){
-            FileSave filesave = new FileSave(model.getRightFile(),view.Righttextfield);
+            filesave = new FileSave(model.getRightFile(),view.Righttextfield);
             model.setRightFile(filesave.savefile);
             //Save관련 action시 실행될것들 내용추가
         }
