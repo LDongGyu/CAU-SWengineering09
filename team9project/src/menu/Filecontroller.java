@@ -24,6 +24,9 @@ public class Filecontroller implements ActionListener {
     private String Before_left = "";
     private String Before_right = "";
     
+    private FileLoader load;
+    private FileCompare compare;
+    private FileSave filesave;
     
     public Filecontroller(Fileview view, Filemodel model){
         this.view = view;
@@ -62,17 +65,29 @@ public class Filecontroller implements ActionListener {
                 left.add(sychleft[i]);
             }
             for(int i = 0; i < model.getdiff().size(); i++) {
-                if(right.get(model.getdiff().get(i)).equals("")) {
-                        continue;
-                }
+
                 left.set(model.getdiff().get(i), right.get(model.getdiff().get(i)));
             }
             view.Lefttextfield.setText("");
             String lText = new String();
             for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+            	if(left.get(i).equals("")) {
+            		continue;
+            	}
                 lText = lText + left.get(i) + "\r\n";
             }
             view.Lefttextfield.setText(lText);
+            
+            view.Righttextfield.setText("");
+            String rText = new String();
+            for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+            	if(right.get(i).equals("")) {
+            		continue;
+            	}
+                rText = rText + right.get(i) + "\r\n";
+            }
+            view.Righttextfield.setText(rText);
+            
         }
         else if(e.getSource() == view.RightMerge){ // left to right
             //Merge관련 action시 실행될것들 내용추가
@@ -91,17 +106,27 @@ public class Filecontroller implements ActionListener {
             
             
             for(int i = 0; i < model.getdiff().size(); i++) {
-                if(!left.get(model.getdiff().get(i)).equals("")) {
                     right.set(model.getdiff().get(i), left.get(model.getdiff().get(i)));  
-                }
-                
             }
             view.Righttextfield.setText("");
             String rText = new String();
             for(int i = 0; i < right.size(); i++) { // 텍스트필드에 저장
+            	if(right.get(i).equals("")) {
+            		continue;
+            	}
                 rText = rText + right.get(i) + "\r\n";
             }
             view.Righttextfield.setText(rText);
+            
+            view.Lefttextfield.setText("");
+            String lText = new String();
+            for(int i = 0; i < left.size(); i++) { // 텍스트필드에 저장
+            	if(left.get(i).equals("")) {
+            		continue;
+            	}
+                lText = lText + left.get(i) + "\r\n";
+            }
+            view.Lefttextfield.setText(lText);
         }
         else if(e.getSource() == view.Compare){
         	// 컴페어 버튼을 비활성화시킬지 결정한다.
@@ -113,7 +138,7 @@ public class Filecontroller implements ActionListener {
             	view.Lefttextfield.getStyledDocument().setParagraphAttributes(0, (view.Lefttextfield.getX()*view.Lefttextfield.getY()), view.firstattribute, false);
                 //Compare관련 action시 실행될것들 내용추가
                 
-                FileCompare compare = new FileCompare();
+                compare = new FileCompare();
                 int max = 10000000;
                 
                 // table 만들기 위해 textfield에서 문자열 가져오기
@@ -142,7 +167,7 @@ public class Filecontroller implements ActionListener {
                 for(int i = 1 ; i < right.length ; i++) // copy array to List
                     rightTXT.add(right[i]);
                 
-                ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, right);  // lcs 문자열을 구하는 함수가 또 필요하다.
+                ArrayList<String> lcs = compare.makeLCSString(left.length, right.length, lcsLength, table, left, right);  // lcs 문자열을 구하는 함수가 또 필요하다.
                 compare.synchronizingTextContent(leftTXT, rightTXT, lcs);
                 
                 String lText = new String();
@@ -198,7 +223,7 @@ public class Filecontroller implements ActionListener {
         }
         else if(e.getSource() == view.LeftLoad){
             //Load관련 action시 실행될것들 내용추가
-            FileLoader load = new FileLoader(); // 탐색기
+            load = new FileLoader(); // 탐색기
             leftTXT = load.fileRead(); // 파일 가져오기
             model.setLeftFile(load.fileLoad);
             String lText = new String();
@@ -233,13 +258,13 @@ public class Filecontroller implements ActionListener {
             view.Lefttextfield.setEditable(view.LeftEditonoff);
         }
         else if(e.getSource() == view.LeftSave){
-            FileSave filesave = new FileSave(model.getLeftFile(),view.Lefttextfield);
+            filesave = new FileSave(model.getLeftFile(),view.Lefttextfield);
             model.setLeftFile(filesave.savefile);
             //Save관련 action시 실행될것들 내용추가
         }
         else if(e.getSource() == view.RightLoad){
             //Load관련 action시 실행될것들 내용추가
-            FileLoader load = new FileLoader(); // 탐색기
+            load = new FileLoader(); // 탐색기
             rightTXT = load.fileRead(); // 파일 가져오기
             model.setRightFile(load.fileLoad);
             String rText = new String();
@@ -273,7 +298,7 @@ public class Filecontroller implements ActionListener {
             view.Righttextfield.setEditable(view.RightEditonoff);
         }
         else if(e.getSource() == view.RightSave){
-            FileSave filesave = new FileSave(model.getRightFile(),view.Righttextfield);
+            filesave = new FileSave(model.getRightFile(),view.Righttextfield);
             model.setRightFile(filesave.savefile);
             //Save관련 action시 실행될것들 내용추가
         }
