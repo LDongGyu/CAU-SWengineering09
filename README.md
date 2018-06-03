@@ -11,10 +11,13 @@ CAU-SWengineering09
 ## 빌드 방법
 **1.** Java를 빌드할 수 있는 IDE를 실행합니다. 그후 오른쪽 상단 File에서 IMPORT를 눌러줍니다.(예시에서는 ECLIPSE 사용)
 ![1](https://user-images.githubusercontent.com/34343170/40882705-0a8159fe-6725-11e8-9f91-861be159043d.png)
+
 **2.** General에서 Projects from Folder or Archive를 선택해줍니다.
 ![2](https://user-images.githubusercontent.com/34343170/40882708-12eaee16-6725-11e8-8eb1-53e1f8012a6b.PNG)  
+
 **3.** 오른쪽 상단의 Directory를 눌러 해당 프로젝트가 있는 경로를 지정해주고 Finish를 눌러줍니다.
 ![3](https://user-images.githubusercontent.com/34343170/40882712-43d3fa72-6725-11e8-951a-a21dfc9eedb9.PNG)  
+
 **4.** 프로젝트의 Mainmenu에서 Run을 해주면 다음과 같이 프로그램이 실행됩니다. (단축키 : Ctrl+F11)
 ![4](https://user-images.githubusercontent.com/34343170/40882713-482b549e-6725-11e8-830c-794351618177.PNG)
 
