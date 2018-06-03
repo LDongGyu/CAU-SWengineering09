@@ -135,4 +135,19 @@ public class FileCompare {
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+	       FileCompare fc = new FileCompare();
+	       int[][] a = fc.makeLCSTable(new String[]{"XXX", "X X", " X ", "XXX"}, new String[]{"XXX", " X ", "X X", "XX "});
+	       int i,j;
+	       for(i=0; i<a.length; i++)
+	       {
+	           for(j=0; j<a[i].length; j++)
+	           {
+	               System.out.print(a[i][j]);
+	           }
+	           System.out.println();
+	       }
+	           
+	    }
 }
