@@ -9,13 +9,13 @@ CAU-SWengineering09
 * 함지훈 (20146512)  
 
 ## 빌드 방법
-1. Java를 빌드할 수 있는 IDE를 실행합니다. 그후 오른쪽 상단 File에서 IMPORT를 눌러줍니다.(예시에서는 ECLIPSE 사용)
+**1.** Java를 빌드할 수 있는 IDE를 실행합니다. 그후 오른쪽 상단 File에서 IMPORT를 눌러줍니다.(예시에서는 ECLIPSE 사용)
 ![1](https://user-images.githubusercontent.com/34343170/40882705-0a8159fe-6725-11e8-9f91-861be159043d.png)
-2. General에서 Projects from Folder or Archive를 선택해줍니다.
+**2.** General에서 Projects from Folder or Archive를 선택해줍니다.
 ![2](https://user-images.githubusercontent.com/34343170/40882708-12eaee16-6725-11e8-8eb1-53e1f8012a6b.PNG)
-3. 오른쪽 상단의 Directory를 눌러 해당 프로젝트가 있는 경로를 지정해주고 Finish를 눌러줍니다.
+**3.** 오른쪽 상단의 Directory를 눌러 해당 프로젝트가 있는 경로를 지정해주고 Finish를 눌러줍니다.
 ![3](https://user-images.githubusercontent.com/34343170/40882712-43d3fa72-6725-11e8-951a-a21dfc9eedb9.PNG)
-4. 프로젝트의 Mainmenu에서 Run을 해주면 다음과 같이 프로그램이 실행됩니다. (단축키 : Ctrl+F11)
+**4.** 프로젝트의 Mainmenu에서 Run을 해주면 다음과 같이 프로그램이 실행됩니다. (단축키 : Ctrl+F11)
 ![4](https://user-images.githubusercontent.com/34343170/40882713-482b549e-6725-11e8-830c-794351618177.PNG)
 
 
@@ -44,7 +44,7 @@ COMPARE를 했다면 *Copy to Left (LeftMerge)* 또는 *Copy to Right (RightMerg
 저희 텍스트 비교 프로그램에서는 txt파일을 수정할 수 있습니다. *EDIT* 을 누르면 텍스트 패널이 수정할 수 있게 변경됩니다.
 ![default](https://user-images.githubusercontent.com/34343170/40882845-797fd4bc-6729-11e8-852e-5121e1df1a8a.PNG)
 
-### save
+### SAVE
 **1.** EDIT 또는 MERGE로 txt파일이 수정되었을 경우 해당 내용을 저장할 수 있습니다. EDIT을 통해 다음과 같이 수정해보았습니다.
 ![default](https://user-images.githubusercontent.com/34343170/40882856-a0b8ebfe-6729-11e8-854f-23902642f0fd.PNG)
 
