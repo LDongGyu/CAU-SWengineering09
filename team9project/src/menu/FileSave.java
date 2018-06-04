@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileSave {
 	private int isSave;
-	File savefile;
+	private File savefile;
 	
 	FileSave(){}
 	FileSave(File f,JTextPane TA){
@@ -88,5 +88,13 @@ public class FileSave {
 			savefile = f;
 		}catch(Exception e1){}
 		
+	}
+	
+	public File getFile() {
+		return savefile;
+	}
+	
+	public void setFile(File file) {
+		savefile = file;
 	}
 }

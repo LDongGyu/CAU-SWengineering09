@@ -124,7 +124,8 @@ public class FileCompare {
 	
 	public void synchronizingTextContent(ArrayList<String> left, ArrayList<String> right, ArrayList<String> lcs) {
 		// 위에서 아래로, 아래에서 위로 각각 LCS를 실행해보고 최소한의 줄로 동기화를 완료하는 쪽을 택한다.
-		ArrayList<String> down_left, down_right;		// 위    -> 아래
+		ArrayList<String> down_left;		// 위    -> 아래
+		ArrayList<String> down_right;
 		ArrayList<String> up_left, up_right;			// 아래  -> 위
 		
 		// initialize
