@@ -9,7 +9,7 @@ CAU-SWengineering09
 * 함지훈 (20146512)  
 
 ## 빌드 방법
-**1.** Java를 빌드할 수 있는 IDE를 실행합니다. 그후 왼쪽 상단 File에서 IMPORT를 눌러줍니다.(예시에서는 ECLIPSE 사용)
+**1.** Java를 빌드할 수 있는 IDE를 실행합니다. 그후 오른쪽 상단 File에서 IMPORT를 눌러줍니다.(예시에서는 ECLIPSE 사용)
 ![1](https://user-images.githubusercontent.com/34343170/40882705-0a8159fe-6725-11e8-9f91-861be159043d.png)
 
 **2.** General에서 Projects from Folder or Archive를 선택해줍니다.
@@ -21,13 +21,14 @@ CAU-SWengineering09
 **4.** 프로젝트의 Mainmenu에서 Run을 해주면 다음과 같이 프로그램이 실행됩니다. (단축키 : Ctrl+F11)
 ![4](https://user-images.githubusercontent.com/34343170/40882713-482b549e-6725-11e8-830c-794351618177.PNG)
 
+
 ***************************************************************************************************************
 
 
 ## 실행 방법
 ### LOAD
 **1.** 프로그램을 빌드한 후 *LOAD* 버튼을 누르면 탐색기가 나오며 txt파일을 선택할 수 있습니다.
- 왼쪽, 오른쪽에 각각 비교하고 싶은 txt파일을 지정해줍니다.
+ 왼쪽, 오른족에 각각 비교하고 싶은 txt파일을 지정해줍니다.
 ![default](https://user-images.githubusercontent.com/34343170/40882813-9fb62dc6-6728-11e8-8b6d-be0a29834f5b.PNG)
 
 **2.** 로드가 완료된 화면입니다. 상단에서 해당 파일명을 할 수 있으며 비교와 수정, 저장, 병합 등 기능을 사용할 수 있습니다.

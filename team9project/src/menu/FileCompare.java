@@ -9,230 +9,232 @@ import java.io.FileWriter;
 import javax.swing.*;
 
 public class FileCompare {
-    /*private ArrayList<String> leftContent, rightContent;*/
-    private int lcsLength = 0;
-    
-    public FileCompare() {
-        
-    }
-    
-    public int getLcsLength() {
-        return lcsLength;
-    }
-    public int[][] makeLCSTable(String[] left, String[] right) {
-        int[][] table = null;
-        int max;
-        
-        // make table
-        table = new int[right.length][];
-        for(int i = 0; i < right.length; i++)
-            table[i] = new int[left.length];
-        
-        // table initialize(1)
-        for(int i = 0; i < left.length; i++)
-            table[0][i] = 0;
-        
-        // Calculate Table Index and LCS length
-        // ì—¬ê¸°ì„œë¶€í„´ ì¸ë±ìŠ¤ì˜ ê°œë…ê³¼ ì‹¤ì œ ìˆœì„œê°€ ê°™ë‹¤ê³  ë³´ë©´ëœë‹¤. ( 1ë²ˆì§¸ ì¸ë±ìŠ¤ = 1(0ì´ ì•„ë‹˜) )
-        for(int i = 1; i < right.length; i++) {
-            max = 0;
-            table[i][0] = 0;    // table initialize(2)
-            for(int j = 1; j < left.length; j++) {
-                if(left[j].equals(right[i]))    // ë¬¸ì¥ì´ ì„œë¡œ ê°™ì€ ê²½ìš°
-                {
-                    max = table[i - 1][j - 1] + 1;
-                    table[i][j] = max;
-                }
-                else    // ë¬¸ì¥ì´ ì„œë¡œ ë‹¤ë¥¼ê²½ìš°                       ... 2 3 4 5 â†’ j
-                {                                           //  . ..........
-                    if(table[i][j - 1] > table[i - 1][j])   //  . ..........
-                        table[i][j] = table[i][j-1];        //  2 .... y ...
-                    else                                    //  3 .. z k ...    
-                        table[i][j] = table[i-1][j];        //  â†“           â€» k : y z ì¤‘ í° ë…€ì„
-                }                                           //  i
-            }
-            if(lcsLength < max)
-                lcsLength = max;
-        }
-        return table;
-    }
-    
-    public ArrayList<Integer> getDifferentLineNumberIndex(ArrayList<String> left, ArrayList<String> right) {
-        ArrayList<Integer> differ_index = new ArrayList<Integer>();
-        
-        for(int i = 0; i < left.size(); i++) {
-            if(left.get(i).equals(right.get(i)))    
-                continue;
-            else                                    // ë‹¤ë¥¸ ê²½ìš°, ê·¸ë¶€ë¶„ì˜ ì¸ë±ìŠ¤ë¥¼ ì €ì¥
-                differ_index.add(i);
-        }
-        return differ_index;
-    }
-    
-    public ArrayList<String> makeLCSString(int leftLength, int rightLength, int lcsLength, int[][] table, String[] str1, String[] str2) // 0 ì´ í¬í•¨ëœ ë¬¸ìì—´ê¸¸ì´
-    {
-        ArrayList<String> lcs1 = new ArrayList<String>();
-        ArrayList<String> lcs2 = new ArrayList<String>();
-        int count1 = 0, count2 = 0;         // ê°™ì€ ìœ„ì¹˜ê°œìˆ˜ë¥¼ ì°¾ëŠ”ë‹¤
-        
-        // right ê¸°ì¤€
-        int temp0, temp1, for_j;
-        temp1 = lcsLength;
-        temp0 = temp1 - 1;
-        for_j = leftLength - 1;
-        
-        for(int i = rightLength - 1 ; i > 0 ; i--) {
-            for(int j = for_j; j > 0; j--) {
-                if (table[i][j] == temp1 && table[i][j - 1] == temp0 && table[i - 1][j - 1] == temp0 && table[i - 1][j] == temp0) {
-                    temp0--;
-                    temp1--;
-                    lcs1.add(0, str2[i]); // lcs1 = str2[i] + lcs1;
-                    
-                    if(i == j)
-                        count2++;
-                    
-                    for_j = j;
-                    break;
-                }
-            }
-        }
-        
-        // left ê¸°ì¤€
-        temp1 = lcsLength;
-        temp0 = temp1 - 1;
-        for_j = rightLength - 1;
-        
-        for(int i = leftLength - 1 ; i > 0 ; i--) {
-            for(int j = for_j; j > 0; j--) {
-                if (table[j][i] == temp1 && table[j][i - 1] == temp0 && table[j - 1][i - 1] == temp0 && table[j - 1][i] == temp0) {
-                    temp0--;
-                    temp1--;
-                    lcs2.add(0, str1[i]); // lcs2 = str1[i] + lcs2;
-                    if(i == j)
-                        count1++;
-                    for_j = j;
-                    break;
-                }
-            }
-        }
-        
-        if(count2 > count1)
-            return lcs1;
-        else
-            return lcs2;
-    }
-    
-    public void synchronizingTextContent(ArrayList<String> left, ArrayList<String> right, ArrayList<String> lcs) {
-        // ìœ„ì—ì„œ ì•„ë˜ë¡œ, ì•„ë˜ì—ì„œ ìœ„ë¡œ ê°ê° LCSë¥¼ ì‹¤í–‰í•´ë³´ê³  ìµœì†Œí•œì˜ ì¤„ë¡œ ë™ê¸°í™”ë¥¼ ì™„ë£Œí•˜ëŠ” ìª½ì„ íƒí•œë‹¤.
-        ArrayList<String> down_left, down_right;        // ìœ„    -> ì•„ë˜
-        ArrayList<String> up_left, up_right;            // ì•„ë˜  -> ìœ„
-        
-        // initialize
-        down_left = (ArrayList<String>) left.clone();
-        down_right = (ArrayList<String>) right.clone();
-        up_left = (ArrayList<String>) left.clone();
-        up_right = (ArrayList<String>) right.clone();
-        
-        // down ì‹¤í–‰
-        for(int i = 0, j = 0, k = 0 ; ; ) {
-            if(k == lcs.size()) {
-                if(i == down_left.size() && j == down_right.size())
-                    break;
-                if(i == down_left.size()) // ì™¼ìª½ì´ ëë‚¬ì„ ê²½ìš°
-                {
-                    down_left.add(i, "");
-                    i++;
-                    j++;
-                }
-                else if(j == down_right.size()) // ì˜¤ë¥¸ìª½ì´ ëë‚¬ì„ ê²½ìš°
-                {
-                    down_right.add(i, "");
-                    i++;
-                    j++;
-                }
-                else // ë‘˜ë‹¤ ì•ˆëë‚œ ê²½ìš°
-                {
-                    i++;
-                    j++;
-                }
-            }
-            else if(down_left.get(i).equals(lcs.get(k)) && down_right.get(j).equals(lcs.get(k))) {
-                i++; j++; k++; 
-            }
-            else if(down_left.get(i).equals(lcs.get(k))) {
-                down_left.add(i, "");
-                i++;
-                j++;
-            }
-            else if(down_right.get(j).equals(lcs.get(k))) {
-                down_right.add(j, "");
-                i++;
-                j++;
-            }
-            else {
-                i++;
-                j++;
-            }
-        }
-        
-        // up ì‹¤í–‰
-        for(int i = up_left.size() - 1, j = up_right.size() - 1, k = lcs.size() - 1; ; ) {
-            if(k == -1) {
-                if(i == -1 && j == -1)
-                    break;
-                if(i == -1) // ì™¼ìª½ì´ ëë‚¬ì„ ê²½ìš°
-                {
-                    up_left.add(0, "");
-                    j--;
-                }
-                else if(j == -1) // ì˜¤ë¥¸ìª½ì´ ëë‚¬ì„ ê²½ìš°
-                {
-                    up_right.add(0, "");
-                    i--;
-                }
-                else // ë‘˜ë‹¤ ì•ˆëë‚œ ê²½ìš°
-                {
-                    i--;
-                    j--;
-                }
-            }
-            else if(up_left.get(i).equals(lcs.get(k)) && up_right.get(j).equals(lcs.get(k))) {
-                i--; j--; k--; 
-            }
-            else if(up_left.get(i).equals(lcs.get(k))) {
-                up_left.add(i+1, "");           // ì¸ë±ìŠ¤ ì—ëŸ¬ë‚˜ì§€ ì•Šì„ê¹Œ...ã…œã…œ
-                j--;
-            }
-            else if(up_right.get(j).equals(lcs.get(k))) {
-                up_right.add(j+1, "");
-                i--;
-            }
-            else {
-                i--;
-                j--;
-            }
-        }
-        
-        
-        // ë¹„êµ í›„ ìµœì†Œí•œìœ¼ë¡œ ë™ê¸°í™” í•œ ìª½ì„ íƒí•œë‹¤
-        if(down_left.size() > up_left.size()) {
-            left.clear();
-            right.clear();
-            for(int i = 0; i < up_left.size(); i++) {
-                left.add(up_left.get(i));
-                right.add(up_right.get(i));
-            }
-            /*left = (ArrayList<String>) up_left.clone();
-            right = (ArrayList<String>) up_right.clone();*/
-        }
-        else {
-            left.clear();
-            right.clear();
-            for(int i = 0; i < down_left.size(); i++) {
-                left.add(down_left.get(i));
-                right.add(down_right.get(i));
-            }
-            /*left = (ArrayList<String>) down_left.clone();
-            right = (ArrayList<String>) down_right.clone();*/
-        }
-    }
+	/*private ArrayList<String> leftContent, rightContent;*/
+	private int lcsLength = 0;
+	
+	public FileCompare() {
+		
+	}
+	
+	public int getLcsLength() {
+		return lcsLength;
+	}
+	public int[][] makeLCSTable(String[] left, String[] right) {
+		int[][] table = null;
+		int max;
+		
+		// make table
+		table = new int[right.length][];
+		for(int i = 0; i < right.length; i++)
+			table[i] = new int[left.length];
+		
+		// table initialize(1)
+		for(int i = 0; i < left.length; i++)
+			table[0][i] = 0;
+		
+		// Calculate Table Index and LCS length
+		// ¿©±â¼­ºÎÅÏ ÀÎµ¦½ºÀÇ °³³ä°ú ½ÇÁ¦ ¼ø¼­°¡ °°´Ù°í º¸¸éµÈ´Ù. ( 1¹øÂ° ÀÎµ¦½º = 1(0ÀÌ ¾Æ´Ô) )
+		for(int i = 1; i < right.length; i++) {
+			max = 0;
+			table[i][0] = 0;	// table initialize(2)
+			for(int j = 1; j < left.length; j++) {
+				if(left[j].equals(right[i]))	// ¹®ÀåÀÌ ¼­·Î °°Àº °æ¿ì
+				{
+					max = table[i - 1][j - 1] + 1;
+					table[i][j] = max;
+				}
+				else	// ¹®ÀåÀÌ ¼­·Î ´Ù¸¦°æ¿ì						 ... 2 3 4 5 ¡æ j
+				{											//  . ..........
+					if(table[i][j - 1] > table[i - 1][j])	//	. ..........
+	                    table[i][j] = table[i][j-1];		//	2 .... y ...
+	                else									//	3 .. z k ...	
+	                    table[i][j] = table[i-1][j];		//	¡é 			¡Ø k : y z Áß Å« ³à¼®
+				}											//  i
+			}
+			if(lcsLength < max)
+				lcsLength = max;
+		}
+		return table;
+	}
+	
+	public ArrayList<Integer> getDifferentLineNumberIndex(ArrayList<String> left, ArrayList<String> right) {
+		ArrayList<Integer> differ_index = new ArrayList<Integer>();
+		
+		for(int i = 0; i < left.size(); i++) {
+			if(left.get(i).equals(right.get(i)))	
+				continue;
+			else									// ´Ù¸¥ °æ¿ì, ±×ºÎºĞÀÇ ÀÎµ¦½º¸¦ ÀúÀå
+				differ_index.add(i);
+		}
+		return differ_index;
+	}
+	
+	public ArrayList<String> makeLCSString(int leftLength, int rightLength, int lcsLength, int[][] table, String[] str1, String[] str2) // 0 ÀÌ Æ÷ÇÔµÈ ¹®ÀÚ¿­±æÀÌ
+	{
+		ArrayList<String> lcs1 = new ArrayList<String>();
+		ArrayList<String> lcs2 = new ArrayList<String>();
+		int count1 = 0, count2 = 0;			// °°Àº À§Ä¡°³¼ö¸¦ Ã£´Â´Ù
+		
+		// right ±âÁØ
+		int temp0, temp1, for_j;
+		temp1 = lcsLength;
+		temp0 = temp1 - 1;
+		for_j = leftLength - 1;
+		
+		for(int i = rightLength - 1 ; i > 0 ; i--) {
+			for(int j = for_j; j > 0; j--) {
+				if (table[i][j] == temp1 && table[i][j - 1] == temp0 && table[i - 1][j - 1] == temp0 && table[i - 1][j] == temp0) {
+	                temp0--;
+	                temp1--;
+	                lcs1.add(0, str2[i]); // lcs1 = str2[i] + lcs1;
+	                
+	                if(i == j)
+	                	count2++;
+	                
+	                for_j = j;
+	                break;
+				}
+			}
+		}
+		
+		// left ±âÁØ
+		temp1 = lcsLength;
+		temp0 = temp1 - 1;
+		for_j = rightLength - 1;
+		
+		for(int i = leftLength - 1 ; i > 0 ; i--) {
+			for(int j = for_j; j > 0; j--) {
+				if (table[j][i] == temp1 && table[j][i - 1] == temp0 && table[j - 1][i - 1] == temp0 && table[j - 1][i] == temp0) {
+	                temp0--;
+	                temp1--;
+	                lcs2.add(0, str1[i]); // lcs2 = str1[i] + lcs2;
+	                if(i == j)
+	                	count1++;
+	                for_j = j;
+	                break;
+				}
+			}
+		}
+		
+		if(count2 > count1)
+			return lcs1;
+		else
+			return lcs2;
+	}
+	
+	public void synchronizingTextContent(ArrayList<String> left, ArrayList<String> right, ArrayList<String> lcs) {
+		// À§¿¡¼­ ¾Æ·¡·Î, ¾Æ·¡¿¡¼­ À§·Î °¢°¢ LCS¸¦ ½ÇÇàÇØº¸°í ÃÖ¼ÒÇÑÀÇ ÁÙ·Î µ¿±âÈ­¸¦ ¿Ï·áÇÏ´Â ÂÊÀ» ÅÃÇÑ´Ù.
+		ArrayList<String> down_left;		// À§    -> ¾Æ·¡
+		ArrayList<String> down_right;
+		ArrayList<String> up_left, up_right;			// ¾Æ·¡  -> À§
+		
+		// initialize
+		down_left = (ArrayList<String>) left.clone();
+		down_right = (ArrayList<String>) right.clone();
+		up_left = (ArrayList<String>) left.clone();
+		up_right = (ArrayList<String>) right.clone();
+		
+		// down ½ÇÇà
+		for(int i = 0, j = 0, k = 0 ; ; ) {
+			if(k == lcs.size()) {
+				if(i == down_left.size() && j == down_right.size())
+					break;
+				if(i == down_left.size()) // ¿ŞÂÊÀÌ ³¡³µÀ» °æ¿ì
+				{
+					down_left.add(i, "");
+					i++;
+					j++;
+				}
+				else if(j == down_right.size()) // ¿À¸¥ÂÊÀÌ ³¡³µÀ» °æ¿ì
+				{
+					down_right.add(i, "");
+					i++;
+					j++;
+				}
+				else // µÑ´Ù ¾È³¡³­ °æ¿ì
+				{
+					i++;
+					j++;
+				}
+			}
+			else if(down_left.get(i).equals(lcs.get(k)) && down_right.get(j).equals(lcs.get(k))) {
+				i++; j++; k++; 
+			}
+			else if(down_left.get(i).equals(lcs.get(k))) {
+				down_left.add(i, "");
+				i++;
+				j++;
+			}
+			else if(down_right.get(j).equals(lcs.get(k))) {
+				down_right.add(j, "");
+				i++;
+				j++;
+			}
+			else {
+				i++;
+				j++;
+			}
+		}
+		
+		// up ½ÇÇà
+		for(int i = up_left.size() - 1, j = up_right.size() - 1, k = lcs.size() - 1; ; ) {
+			if(k == -1) {
+				if(i == -1 && j == -1)
+					break;
+				if(i == -1) // ¿ŞÂÊÀÌ ³¡³µÀ» °æ¿ì
+				{
+					up_left.add(0, "");
+					j--;
+				}
+				else if(j == -1) // ¿À¸¥ÂÊÀÌ ³¡³µÀ» °æ¿ì
+				{
+					up_right.add(0, "");
+					i--;
+				}
+				else // µÑ´Ù ¾È³¡³­ °æ¿ì
+				{
+					i--;
+					j--;
+				}
+			}
+			else if(up_left.get(i).equals(lcs.get(k)) && up_right.get(j).equals(lcs.get(k))) {
+				i--; j--; k--; 
+			}
+			else if(up_left.get(i).equals(lcs.get(k))) {
+				up_left.add(i+1, "");			// ÀÎµ¦½º ¿¡·¯³ªÁö ¾ÊÀ»±î...¤Ì¤Ì
+				j--;
+			}
+			else if(up_right.get(j).equals(lcs.get(k))) {
+				up_right.add(j+1, "");
+				i--;
+			}
+			else {
+				i--;
+				j--;
+			}
+		}
+		
+		
+		// ºñ±³ ÈÄ ÃÖ¼ÒÇÑÀ¸·Î µ¿±âÈ­ ÇÑ ÂÊÀ» ÅÃÇÑ´Ù
+		if(down_left.size() > up_left.size()) {
+			left.clear();
+			right.clear();
+			for(int i = 0; i < up_left.size(); i++) {
+				left.add(up_left.get(i));
+				right.add(up_right.get(i));
+			}
+			/*left = (ArrayList<String>) up_left.clone();
+			right = (ArrayList<String>) up_right.clone();*/
+		}
+		else {
+			left.clear();
+			right.clear();
+			for(int i = 0; i < down_left.size(); i++) {
+				left.add(down_left.get(i));
+				right.add(down_right.get(i));
+			}
+			/*left = (ArrayList<String>) down_left.clone();
+			right = (ArrayList<String>) down_right.clone();*/
+		}
+	}
+}
