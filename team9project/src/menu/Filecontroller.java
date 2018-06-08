@@ -225,7 +225,7 @@ public class Filecontroller implements ActionListener {
             //Load관련 action시 실행될것들 내용추가
             load = new FileLoader(); // 탐색기
             leftTXT = load.fileRead(); // 파일 가져오기
-            model.setLeftFile(load.fileLoad);
+            model.setLeftFile(load.getFile());
             String lText = new String();
             view.Lefttextfield.setText(""); // 텍스트필드 초기화 후 출력
             for(int i = 0; i < leftTXT.size(); i++) { // 텍스트필드에 출력
@@ -259,14 +259,14 @@ public class Filecontroller implements ActionListener {
         }
         else if(e.getSource() == view.LeftSave){
             filesave = new FileSave(model.getLeftFile(),view.Lefttextfield);
-            model.setLeftFile(filesave.savefile);
+            model.setLeftFile(filesave.getFile());
             //Save관련 action시 실행될것들 내용추가
         }
         else if(e.getSource() == view.RightLoad){
             //Load관련 action시 실행될것들 내용추가
             load = new FileLoader(); // 탐색기
             rightTXT = load.fileRead(); // 파일 가져오기
-            model.setRightFile(load.fileLoad);
+            model.setRightFile(load.getFile());
             String rText = new String();
             view.Righttextfield.setText("");
             for(int i = 0; i < rightTXT.size(); i++) { // 텍스트필드에 저장
@@ -299,7 +299,7 @@ public class Filecontroller implements ActionListener {
         }
         else if(e.getSource() == view.RightSave){
             filesave = new FileSave(model.getRightFile(),view.Righttextfield);
-            model.setRightFile(filesave.savefile);
+            model.setRightFile(filesave.getFile());
             //Save관련 action시 실행될것들 내용추가
         }
         else if(e.getSource() == view.EXIT){

@@ -33,22 +33,22 @@ public class FileCompare {
             table[0][i] = 0;
         
         // Calculate Table Index and LCS length
-        // ¿©±â¼­ºÎÅÏ ÀÎµ¦½ºÀÇ °³³ä°ú ½ÇÁ¦ ¼ø¼­°¡ °°´Ù°í º¸¸éµÈ´Ù. ( 1¹øÂ° ÀÎµ¦½º = 1(0ÀÌ ¾Æ´Ô) )
+        // ì—¬ê¸°ì„œë¶€í„´ ì¸ë±ìŠ¤ì˜ ê°œë…ê³¼ ì‹¤ì œ ìˆœì„œê°€ ê°™ë‹¤ê³  ë³´ë©´ëœë‹¤. ( 1ë²ˆì§¸ ì¸ë±ìŠ¤ = 1(0ì´ ì•„ë‹˜) )
         for(int i = 1; i < right.length; i++) {
             max = 0;
             table[i][0] = 0;    // table initialize(2)
             for(int j = 1; j < left.length; j++) {
-                if(left[j].equals(right[i]))    // ¹®ÀåÀÌ ¼­·Î °°Àº °æ¿ì
+                if(left[j].equals(right[i]))    // ë¬¸ì¥ì´ ì„œë¡œ ê°™ì€ ê²½ìš°
                 {
                     max = table[i - 1][j - 1] + 1;
                     table[i][j] = max;
                 }
-                else    // ¹®ÀåÀÌ ¼­·Î ´Ù¸¦°æ¿ì                       ... 2 3 4 5 ¡æ j
+                else    // ë¬¸ì¥ì´ ì„œë¡œ ë‹¤ë¥¼ê²½ìš°                       ... 2 3 4 5 â†’ j
                 {                                           //  . ..........
                     if(table[i][j - 1] > table[i - 1][j])   //  . ..........
                         table[i][j] = table[i][j-1];        //  2 .... y ...
                     else                                    //  3 .. z k ...    
-                        table[i][j] = table[i-1][j];        //  ¡é           ¡Ø k : y z Áß Å« ³à¼®
+                        table[i][j] = table[i-1][j];        //  â†“           â€» k : y z ì¤‘ í° ë…€ì„
                 }                                           //  i
             }
             if(lcsLength < max)
@@ -63,19 +63,19 @@ public class FileCompare {
         for(int i = 0; i < left.size(); i++) {
             if(left.get(i).equals(right.get(i)))    
                 continue;
-            else                                    // ´Ù¸¥ °æ¿ì, ±×ºÎºĞÀÇ ÀÎµ¦½º¸¦ ÀúÀå
+            else                                    // ë‹¤ë¥¸ ê²½ìš°, ê·¸ë¶€ë¶„ì˜ ì¸ë±ìŠ¤ë¥¼ ì €ì¥
                 differ_index.add(i);
         }
         return differ_index;
     }
     
-    public ArrayList<String> makeLCSString(int leftLength, int rightLength, int lcsLength, int[][] table, String[] str1, String[] str2) // 0 ÀÌ Æ÷ÇÔµÈ ¹®ÀÚ¿­±æÀÌ
+    public ArrayList<String> makeLCSString(int leftLength, int rightLength, int lcsLength, int[][] table, String[] str1, String[] str2) // 0 ì´ í¬í•¨ëœ ë¬¸ìì—´ê¸¸ì´
     {
         ArrayList<String> lcs1 = new ArrayList<String>();
         ArrayList<String> lcs2 = new ArrayList<String>();
-        int count1 = 0, count2 = 0;         // °°Àº À§Ä¡°³¼ö¸¦ Ã£´Â´Ù
+        int count1 = 0, count2 = 0;         // ê°™ì€ ìœ„ì¹˜ê°œìˆ˜ë¥¼ ì°¾ëŠ”ë‹¤
         
-        // right ±âÁØ
+        // right ê¸°ì¤€
         int temp0, temp1, for_j;
         temp1 = lcsLength;
         temp0 = temp1 - 1;
@@ -97,7 +97,7 @@ public class FileCompare {
             }
         }
         
-        // left ±âÁØ
+        // left ê¸°ì¤€
         temp1 = lcsLength;
         temp0 = temp1 - 1;
         for_j = rightLength - 1;
@@ -123,9 +123,9 @@ public class FileCompare {
     }
     
     public void synchronizingTextContent(ArrayList<String> left, ArrayList<String> right, ArrayList<String> lcs) {
-        // À§¿¡¼­ ¾Æ·¡·Î, ¾Æ·¡¿¡¼­ À§·Î °¢°¢ LCS¸¦ ½ÇÇàÇØº¸°í ÃÖ¼ÒÇÑÀÇ ÁÙ·Î µ¿±âÈ­¸¦ ¿Ï·áÇÏ´Â ÂÊÀ» ÅÃÇÑ´Ù.
-        ArrayList<String> down_left, down_right;        // À§    -> ¾Æ·¡
-        ArrayList<String> up_left, up_right;            // ¾Æ·¡  -> À§
+        // ìœ„ì—ì„œ ì•„ë˜ë¡œ, ì•„ë˜ì—ì„œ ìœ„ë¡œ ê°ê° LCSë¥¼ ì‹¤í–‰í•´ë³´ê³  ìµœì†Œí•œì˜ ì¤„ë¡œ ë™ê¸°í™”ë¥¼ ì™„ë£Œí•˜ëŠ” ìª½ì„ íƒí•œë‹¤.
+        ArrayList<String> down_left, down_right;        // ìœ„    -> ì•„ë˜
+        ArrayList<String> up_left, up_right;            // ì•„ë˜  -> ìœ„
         
         // initialize
         down_left = (ArrayList<String>) left.clone();
@@ -133,24 +133,24 @@ public class FileCompare {
         up_left = (ArrayList<String>) left.clone();
         up_right = (ArrayList<String>) right.clone();
         
-        // down ½ÇÇà
+        // down ì‹¤í–‰
         for(int i = 0, j = 0, k = 0 ; ; ) {
             if(k == lcs.size()) {
                 if(i == down_left.size() && j == down_right.size())
                     break;
-                if(i == down_left.size()) // ¿ŞÂÊÀÌ ³¡³µÀ» °æ¿ì
+                if(i == down_left.size()) // ì™¼ìª½ì´ ëë‚¬ì„ ê²½ìš°
                 {
                     down_left.add(i, "");
                     i++;
                     j++;
                 }
-                else if(j == down_right.size()) // ¿À¸¥ÂÊÀÌ ³¡³µÀ» °æ¿ì
+                else if(j == down_right.size()) // ì˜¤ë¥¸ìª½ì´ ëë‚¬ì„ ê²½ìš°
                 {
                     down_right.add(i, "");
                     i++;
                     j++;
                 }
-                else // µÑ´Ù ¾È³¡³­ °æ¿ì
+                else // ë‘˜ë‹¤ ì•ˆëë‚œ ê²½ìš°
                 {
                     i++;
                     j++;
@@ -175,22 +175,22 @@ public class FileCompare {
             }
         }
         
-        // up ½ÇÇà
+        // up ì‹¤í–‰
         for(int i = up_left.size() - 1, j = up_right.size() - 1, k = lcs.size() - 1; ; ) {
             if(k == -1) {
                 if(i == -1 && j == -1)
                     break;
-                if(i == -1) // ¿ŞÂÊÀÌ ³¡³µÀ» °æ¿ì
+                if(i == -1) // ì™¼ìª½ì´ ëë‚¬ì„ ê²½ìš°
                 {
                     up_left.add(0, "");
                     j--;
                 }
-                else if(j == -1) // ¿À¸¥ÂÊÀÌ ³¡³µÀ» °æ¿ì
+                else if(j == -1) // ì˜¤ë¥¸ìª½ì´ ëë‚¬ì„ ê²½ìš°
                 {
                     up_right.add(0, "");
                     i--;
                 }
-                else // µÑ´Ù ¾È³¡³­ °æ¿ì
+                else // ë‘˜ë‹¤ ì•ˆëë‚œ ê²½ìš°
                 {
                     i--;
                     j--;
@@ -200,7 +200,7 @@ public class FileCompare {
                 i--; j--; k--; 
             }
             else if(up_left.get(i).equals(lcs.get(k))) {
-                up_left.add(i+1, "");           // ÀÎµ¦½º ¿¡·¯³ªÁö ¾ÊÀ»±î...¤Ì¤Ì
+                up_left.add(i+1, "");           // ì¸ë±ìŠ¤ ì—ëŸ¬ë‚˜ì§€ ì•Šì„ê¹Œ...ã…œã…œ
                 j--;
             }
             else if(up_right.get(j).equals(lcs.get(k))) {
@@ -214,7 +214,7 @@ public class FileCompare {
         }
         
         
-        // ºñ±³ ÈÄ ÃÖ¼ÒÇÑÀ¸·Î µ¿±âÈ­ ÇÑ ÂÊÀ» ÅÃÇÑ´Ù
+        // ë¹„êµ í›„ ìµœì†Œí•œìœ¼ë¡œ ë™ê¸°í™” í•œ ìª½ì„ íƒí•œë‹¤
         if(down_left.size() > up_left.size()) {
             left.clear();
             right.clear();
@@ -236,4 +236,3 @@ public class FileCompare {
             right = (ArrayList<String>) down_right.clone();*/
         }
     }
-}
