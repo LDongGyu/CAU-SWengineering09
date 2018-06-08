@@ -50,7 +50,7 @@ public class FileCompareTest {
         assertArrayEquals(fc.makeLCSTable(left, right), new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                                                      {0, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
                                                      {0, 1, 2, 2, 2, 2, 2, 2, 2, 2}, 
-                                                     {0, 1, 2, 2, 3, 2, 2, 2, 2, 2}, 
+                                                     {0, 1, 2, 2, 2, 2, 2, 2, 2, 2}, 
                                                      {0, 1, 2, 2, 2, 2, 2, 2, 2, 2}, 
                                                      {0, 1, 2, 2, 2, 2, 2, 2, 2, 2}, 
                                                      {0, 1, 2, 2, 2, 2, 3, 3, 3, 3}, 
@@ -89,7 +89,7 @@ public class FileCompareTest {
       same.add(3);
       same.add(4);
       same.add(6);
-        assertEquals(fc.getDifferentLineNumberIndex(left, right), new ArrayList<Integer>());
+        assertEquals(fc.getDifferentLineNumberIndex(left, right), same);
         
     }
     
